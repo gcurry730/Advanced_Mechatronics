@@ -17,7 +17,7 @@
 #pragma config OSCIOFNC = OFF // free up secondary osc pins
 #pragma config FPBDIV = DIV_1 // divide CPU freq by 1 for peripheral bus clock
 #pragma config FCKSM = CSDCMD // do not enable clock switch
-#pragma config WDTPS = PS1048576                         /////// slowest wdt
+#pragma config WDTPS = 00000              /////// slowest wdt?? PS1048576 
 #pragma config WINDIS = OFF // no wdt window
 #pragma config FWDTEN = OFF // wdt off by default
 #pragma config FWDTWINSZ = WINSZ_25 // wdt window at 25%
@@ -51,15 +51,25 @@ int main() {
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0;
     
-   TRISAbits.TRISA4 = 0;        // Pin A4  is the LED, 0 for output
-   LATAbits.LATA4 = 1;          // make LED pin "low" (0) = "on"
-    
+   TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
+   LATAbits.LATA4 = 1;          // make LED pin "low" (1) = "on"
+   TRISBbits.TRISB4 = 1;
+   
     __builtin_enable_interrupts();
-    
+     _CP0_SET_COUNT(0);
+     
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		// remember the core timer runs at half the CPU speed
-       // _CP0_SET_COUNT(0);
+           
+        while(!PORTBbits.RB4) {             // when button is pressed, 
+            LATAbits.LATA4 = 0;                 // LED is off
+        }
+        
+        if(_CP0_GET_COUNT() > 12000) {              // every x sec.. 
+            LATAbits.LATA4 = !LATAbits.LATA4;       // toggle LED
+            _CP0_SET_COUNT(0);
+        }
         //if(_CP0_GET_COUNT()==40000 ){   //40 M ticks per second so ...
           //  _CP0_SET_COUNT(0);
             //LATAINV=0x10; 
