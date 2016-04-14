@@ -142,7 +142,7 @@
 <plain>
 <wire x1="0" y1="0" x2="50" y2="0" width="0" layer="20"/>
 <wire x1="50" y1="0" x2="50" y2="50" width="0" layer="20"/>
-<wire x1="50" y1="50" x2="0" y2="50" width="0" layer="21"/>
+<wire x1="50" y1="50" x2="0" y2="50" width="0" layer="20"/>
 <wire x1="0" y1="50" x2="0" y2="0" width="0" layer="20"/>
 <text x="3.0725125" y="15.59694375" size="1.6764" layer="21">A0
 A1
@@ -152,7 +152,7 @@ B4
 A4
 3.3V
 GND</text>
-<text x="41.178853125" y="15.5219875" size="1.6764" layer="21">B15
+<text x="42.448853125" y="15.5219875" size="1.6764" layer="21">B15
 B14
 B13
   B9
@@ -174,7 +174,7 @@ B4
 A4
 3.3V
 GND</text>
-<text x="46.258853125" y="15.5219875" size="1.6764" layer="22" rot="MR0">B15
+<text x="47.528853125" y="15.5219875" size="1.6764" layer="22" rot="MR0">B15
 B14
 B13
   B9
@@ -771,7 +771,7 @@ design rules under a new name.</description>
 <element name="U$2" library="myPCB" package="TO92" value="MCP1702" x="25.4" y="45.72" smashed="yes">
 <attribute name="VALUE" x="20.955" y="41.91" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="U$4" library="myPCB" package="SLIDESWITCH" value="SLIDESWITCH" x="15.834846875" y="47.786740625" locked="yes" smashed="yes" rot="MR0"/>
+<element name="U$4" library="myPCB" package="SLIDESWITCH" value="SLIDESWITCH" x="15.834846875" y="47.786740625" smashed="yes" rot="MR0"/>
 <element name="USER" library="myPCB" package="1X03_LOCK" value="" x="2.54" y="2.54" smashed="yes" rot="R90">
 <attribute name="NAME" x="5.7912" y="2.4638" size="1.27" layer="25" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="5.715" y="1.27" size="1.27" layer="27" rot="R90"/>
@@ -790,7 +790,7 @@ design rules under a new name.</description>
 </element>
 <element name="8MHZ" library="myPCB" package="1X03" value="" x="16.51" y="13.97" rot="R90"/>
 <element name="PICKIT" library="myPCB" package="1X05" value="" x="48.9" y="47" smashed="yes" rot="R270">
-<attribute name="NAME" x="45.6488" y="43.2662" size="1.27" layer="25" ratio="10" rot="R270"/>
+<attribute name="NAME" x="45.6488" y="40.7262" size="1.27" layer="25" ratio="10" rot="R270"/>
 <attribute name="VALUE" x="45.725" y="48.27" size="1.27" layer="27" rot="R270"/>
 </element>
 </elements>

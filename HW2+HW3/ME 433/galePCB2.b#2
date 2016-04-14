@@ -771,7 +771,7 @@ design rules under a new name.</description>
 <element name="U$2" library="myPCB" package="TO92" value="MCP1702" x="25.4" y="45.72" smashed="yes">
 <attribute name="VALUE" x="20.955" y="41.91" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="U$4" library="myPCB" package="SLIDESWITCH" value="SLIDESWITCH" x="15.834846875" y="47.786740625" locked="yes" smashed="yes" rot="MR0"/>
+<element name="U$4" library="myPCB" package="SLIDESWITCH" value="SLIDESWITCH" x="15.834846875" y="47.786740625" smashed="yes" rot="MR0"/>
 <element name="USER" library="myPCB" package="1X03_LOCK" value="" x="2.54" y="2.54" smashed="yes" rot="R90">
 <attribute name="NAME" x="5.7912" y="2.4638" size="1.27" layer="25" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="5.715" y="1.27" size="1.27" layer="27" rot="R90"/>
