@@ -9523,14 +9523,6 @@ Standard 5-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <junction x="40.64" y="33.02"/>
 </segment>
 </net>
-<net name="N$4" class="0">
-<segment>
-<pinref part="U$1" gate="G$1" pin="12.SOSCO"/>
-<pinref part="GRN" gate="G$1" pin="A"/>
-<wire x1="50.8" y1="22.86" x2="38.1" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="22.86" x2="38.1" y2="15.24" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="B4/USER" class="0">
 <segment>
 <pinref part="USER" gate="J$1" pin="3"/>
@@ -9727,6 +9719,12 @@ Standard 5-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <pinref part="J1" gate="G$1" pin="3"/>
 <wire x1="106.68" y1="-7.62" x2="101.6" y2="-7.62" width="0.1524" layer="91"/>
 <label x="99.06" y="-7.62" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="12.SOSCO"/>
+<pinref part="GRN" gate="G$1" pin="A"/>
+<wire x1="50.8" y1="22.86" x2="38.1" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="22.86" x2="38.1" y2="15.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

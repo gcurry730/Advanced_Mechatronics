@@ -9839,8 +9839,8 @@ Standard 8-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <part name="+3V4" library="myPCB" deviceset="+3V3" device=""/>
 <part name="+3V5" library="myPCB" deviceset="+3V3" device=""/>
 <part name="+3V7" library="myPCB" deviceset="+3V3" device=""/>
-<part name="C1" library="myPCB" deviceset="C-US" device="025-024X044" value="10uF"/>
-<part name="C3" library="myPCB" deviceset="C-US" device="025-024X044"/>
+<part name="C1" library="myPCB" deviceset="C-US" device="025-024X044" value="+10uF- "/>
+<part name="C3" library="myPCB" deviceset="C-US" device="025-024X044" value="0.1 uF"/>
 <part name="C4" library="myPCB" deviceset="C-US" device="025-024X044" value="0.1uF"/>
 <part name="C5" library="myPCB" deviceset="C-US" device="025-024X044" value="0.1uF"/>
 <part name="C6" library="myPCB" deviceset="C-US" device="025-024X044" value="10uF"/>
