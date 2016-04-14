@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -18626,6 +18626,7 @@ Source: www.kingbright.com</description>
 <connect gate="G$1" pin="D+" pad="D+"/>
 <connect gate="G$1" pin="D-" pad="D-"/>
 <connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="ID" pad="ID"/>
 <connect gate="G$1" pin="VBUS" pad="VBUS"/>
 </connects>
 <technologies>
@@ -18809,6 +18810,13 @@ Source: www.kingbright.com</description>
 </technologies>
 </device>
 <device name="" package="USB-MB-H">
+<connects>
+<connect gate="G$1" pin="D+" pad="D+"/>
+<connect gate="G$1" pin="D-" pad="D-"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="ID" pad="ID"/>
+<connect gate="G$1" pin="VBUS" pad="VBUS"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -21495,17 +21503,6 @@ Standard 15-pin 0.1" header. Use with straight break away headers (SKU : PRT-001
 </device>
 </devices>
 </deviceset>
-<deviceset name="USB2">
-<gates>
-</gates>
-<devices>
-<device name="">
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
 <deviceset name="USB3" prefix="J">
 <description>&lt;b&gt;USB Connectors&lt;/b&gt;
 &lt;p&gt;USB-B-PTH is fully proven SKU : PRT-00139/CONN-08278
@@ -21549,6 +21546,7 @@ Standard 15-pin 0.1" header. Use with straight break away headers (SKU : PRT-001
 <connect gate="G$1" pin="D+" pad="D+"/>
 <connect gate="G$1" pin="D-" pad="D-"/>
 <connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="ID" pad="ID"/>
 <connect gate="G$1" pin="VBUS" pad="VBUS"/>
 </connects>
 <technologies>
