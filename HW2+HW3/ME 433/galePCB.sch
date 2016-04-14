@@ -9214,6 +9214,7 @@ Standard 5-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <part name="R8" library="myPCB" deviceset="R-US_" device="0207/10" value="330"/>
 <part name="8MHZ" library="myPCB" deviceset="M03" device="PTH"/>
 <part name="PICKIT" library="myPCB" deviceset="M05" device="PTH"/>
+<part name="P+3" library="myPCB" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -9270,6 +9271,7 @@ Standard 5-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <instance part="R8" gate="G$1" x="88.9" y="99.06" rot="R180"/>
 <instance part="8MHZ" gate="J$1" x="33.02" y="35.56"/>
 <instance part="PICKIT" gate="G$1" x="119.38" y="60.96"/>
+<instance part="P+3" gate="1" x="25.4" y="109.22"/>
 </instances>
 <busses>
 </busses>
@@ -9445,19 +9447,6 @@ Standard 5-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <pinref part="U$4" gate="G$1" pin="IN"/>
 <wire x1="-20.32" y1="96.52" x2="-5.08" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="-5.08" y1="96.52" x2="0" y2="109.22" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="U$2" gate="G$1" pin="2.VIN"/>
-<wire x1="5.08" y1="106.68" x2="25.4" y2="106.68" width="0.1524" layer="91"/>
-<wire x1="25.4" y1="106.68" x2="25.4" y2="104.14" width="0.1524" layer="91"/>
-<junction x="25.4" y="106.68"/>
-<pinref part="C4" gate="G$1" pin="1"/>
-<wire x1="25.4" y1="106.68" x2="33.02" y2="106.68" width="0.1524" layer="91"/>
-<wire x1="5.08" y1="106.68" x2="5.08" y2="104.14" width="0.1524" layer="91"/>
-<label x="30.48" y="106.68" size="1.778" layer="95"/>
-<pinref part="U$4" gate="G$1" pin="OUT1"/>
-<wire x1="5.08" y1="109.22" x2="5.08" y2="106.68" width="0.1524" layer="91"/>
-<junction x="5.08" y="106.68"/>
 </segment>
 </net>
 <net name="MCLR" class="0">
@@ -9700,6 +9689,18 @@ Standard 5-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <label x="91.44" y="10.16" size="1.778" layer="95"/>
 <pinref part="P+2" gate="1" pin="+5V"/>
 <wire x1="101.6" y1="12.7" x2="101.6" y2="15.24" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="2.VIN"/>
+<wire x1="5.08" y1="106.68" x2="25.4" y2="106.68" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="106.68" x2="25.4" y2="104.14" width="0.1524" layer="91"/>
+<pinref part="C4" gate="G$1" pin="1"/>
+<wire x1="5.08" y1="106.68" x2="5.08" y2="104.14" width="0.1524" layer="91"/>
+<pinref part="U$4" gate="G$1" pin="OUT1"/>
+<wire x1="5.08" y1="109.22" x2="5.08" y2="106.68" width="0.1524" layer="91"/>
+<junction x="5.08" y="106.68"/>
+<pinref part="P+3" gate="1" pin="+5V"/>
+<junction x="25.4" y="106.68"/>
 </segment>
 </net>
 <net name="N$6" class="0">

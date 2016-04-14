@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -14923,13 +14923,16 @@ Used on FTDI breakouts</description>
 <wire x1="-2" y1="4" x2="-2" y2="2" width="0.127" layer="21"/>
 </package>
 <package name="CRYSTAL_RES">
-<pad name="2" x="0" y="0" drill="0.5"/>
-<pad name="1" x="-2.5" y="0" drill="0.5"/>
-<pad name="3" x="2.5" y="0" drill="0.5"/>
+<pad name="2" x="0" y="0" drill="0.9"/>
+<pad name="1" x="-2.5" y="0" drill="0.9"/>
+<pad name="3" x="2.5" y="0" drill="0.9"/>
 <wire x1="-5" y1="2.5" x2="-5" y2="-2.5" width="0.127" layer="21"/>
 <wire x1="-5" y1="-2.5" x2="5" y2="-2.5" width="0.127" layer="21"/>
 <wire x1="5" y1="-2.5" x2="5" y2="2.5" width="0.127" layer="21"/>
 <wire x1="5" y1="2.5" x2="-5" y2="2.5" width="0.127" layer="21"/>
+<hole x="-2.54" y="0" drill="0.6"/>
+<hole x="0" y="0" drill="0.6"/>
+<hole x="2.54" y="0" drill="0.6"/>
 </package>
 </packages>
 <symbols>
@@ -15435,16 +15438,16 @@ Used on FTDI breakouts</description>
 </symbol>
 <symbol name="SLIDESWITCH">
 <pin name="1" x="-10.16" y="5.08" length="middle" rot="R270"/>
-<pin name="2" x="-5.08" y="5.08" length="middle" rot="R270"/>
-<pin name="3" x="0" y="5.08" length="middle" rot="R270"/>
-<pin name="4" x="5.08" y="5.08" length="middle" rot="R270"/>
+<pin name="OUT1" x="-5.08" y="5.08" length="middle" rot="R270"/>
+<pin name="IN" x="0" y="5.08" length="middle" rot="R270"/>
+<pin name="OUT2" x="5.08" y="5.08" length="middle" rot="R270"/>
 <pin name="5" x="10.16" y="5.08" length="middle" rot="R270"/>
-<wire x1="-12.7" y1="2.54" x2="-12.7" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-12.7" y1="-5.08" x2="12.7" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="12.7" y1="-5.08" x2="12.7" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="2.54" x2="-12.7" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-7.62" x2="12.7" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-7.62" x2="12.7" y2="2.54" width="0.254" layer="94"/>
 <wire x1="12.7" y1="2.54" x2="-12.7" y2="2.54" width="0.254" layer="94"/>
-<text x="-10.16" y="-7.62" size="1.27" layer="94">&gt;NAME</text>
-<text x="2.54" y="-7.62" size="1.27" layer="94">&gt;VALUE</text>
+<text x="-20.32" y="-2.54" size="1.27" layer="94">&gt;NAME</text>
+<text x="-20.32" y="0" size="1.27" layer="94">&gt;VALUE</text>
 </symbol>
 <symbol name="CRYSTAL_RES">
 <pin name="1" x="-5.08" y="0" length="middle" rot="R90"/>
@@ -18626,6 +18629,7 @@ Source: www.kingbright.com</description>
 <connect gate="G$1" pin="D+" pad="D+"/>
 <connect gate="G$1" pin="D-" pad="D-"/>
 <connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="ID" pad="ID"/>
 <connect gate="G$1" pin="VBUS" pad="VBUS"/>
 </connects>
 <technologies>
@@ -18809,6 +18813,13 @@ Source: www.kingbright.com</description>
 </technologies>
 </device>
 <device name="" package="USB-MB-H">
+<connects>
+<connect gate="G$1" pin="D+" pad="D+"/>
+<connect gate="G$1" pin="D-" pad="D-"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="ID" pad="ID"/>
+<connect gate="G$1" pin="VBUS" pad="VBUS"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -21467,10 +21478,10 @@ Standard 15-pin 0.1" header. Use with straight break away headers (SKU : PRT-001
 <device name="" package="SLIDESWITCH">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-<connect gate="G$1" pin="4" pad="4"/>
 <connect gate="G$1" pin="5" pad="5"/>
+<connect gate="G$1" pin="IN" pad="3"/>
+<connect gate="G$1" pin="OUT1" pad="2"/>
+<connect gate="G$1" pin="OUT2" pad="4"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -21489,17 +21500,6 @@ Standard 15-pin 0.1" header. Use with straight break away headers (SKU : PRT-001
 <connect gate="G$1" pin="2" pad="2"/>
 <connect gate="G$1" pin="3" pad="3"/>
 </connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="USB2">
-<gates>
-</gates>
-<devices>
-<device name="">
 <technologies>
 <technology name=""/>
 </technologies>
@@ -21549,6 +21549,7 @@ Standard 15-pin 0.1" header. Use with straight break away headers (SKU : PRT-001
 <connect gate="G$1" pin="D+" pad="D+"/>
 <connect gate="G$1" pin="D-" pad="D-"/>
 <connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="ID" pad="ID"/>
 <connect gate="G$1" pin="VBUS" pad="VBUS"/>
 </connects>
 <technologies>
