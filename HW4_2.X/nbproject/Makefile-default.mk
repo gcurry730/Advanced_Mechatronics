@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../HW4/HW4.X/I2C.c ../HW4/HW4.X/SPI.c ../HW4/HW4.X/main.c
+SOURCEFILES_QUOTED_IF_SPACED=I2C.c SPI.c main.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/274453142/I2C.o ${OBJECTDIR}/_ext/274453142/SPI.o ${OBJECTDIR}/_ext/274453142/main.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/274453142/I2C.o.d ${OBJECTDIR}/_ext/274453142/SPI.o.d ${OBJECTDIR}/_ext/274453142/main.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/I2C.o ${OBJECTDIR}/SPI.o ${OBJECTDIR}/main.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/I2C.o.d ${OBJECTDIR}/SPI.o.d ${OBJECTDIR}/main.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/274453142/I2C.o ${OBJECTDIR}/_ext/274453142/SPI.o ${OBJECTDIR}/_ext/274453142/main.o
+OBJECTFILES=${OBJECTDIR}/I2C.o ${OBJECTDIR}/SPI.o ${OBJECTDIR}/main.o
 
 # Source Files
-SOURCEFILES=../HW4/HW4.X/I2C.c ../HW4/HW4.X/SPI.c ../HW4/HW4.X/main.c
+SOURCEFILES=I2C.c SPI.c main.c
 
 
 CFLAGS=
@@ -94,42 +94,42 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/_ext/274453142/I2C.o: ../HW4/HW4.X/I2C.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/274453142" 
-	@${RM} ${OBJECTDIR}/_ext/274453142/I2C.o.d 
-	@${RM} ${OBJECTDIR}/_ext/274453142/I2C.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/274453142/I2C.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/274453142/I2C.o.d" -o ${OBJECTDIR}/_ext/274453142/I2C.o ../HW4/HW4.X/I2C.c     
+${OBJECTDIR}/I2C.o: I2C.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/I2C.o.d 
+	@${RM} ${OBJECTDIR}/I2C.o 
+	@${FIXDEPS} "${OBJECTDIR}/I2C.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/I2C.o.d" -o ${OBJECTDIR}/I2C.o I2C.c     
 	
-${OBJECTDIR}/_ext/274453142/SPI.o: ../HW4/HW4.X/SPI.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/274453142" 
-	@${RM} ${OBJECTDIR}/_ext/274453142/SPI.o.d 
-	@${RM} ${OBJECTDIR}/_ext/274453142/SPI.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/274453142/SPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/274453142/SPI.o.d" -o ${OBJECTDIR}/_ext/274453142/SPI.o ../HW4/HW4.X/SPI.c     
+${OBJECTDIR}/SPI.o: SPI.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/SPI.o.d 
+	@${RM} ${OBJECTDIR}/SPI.o 
+	@${FIXDEPS} "${OBJECTDIR}/SPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SPI.o.d" -o ${OBJECTDIR}/SPI.o SPI.c     
 	
-${OBJECTDIR}/_ext/274453142/main.o: ../HW4/HW4.X/main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/274453142" 
-	@${RM} ${OBJECTDIR}/_ext/274453142/main.o.d 
-	@${RM} ${OBJECTDIR}/_ext/274453142/main.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/274453142/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/274453142/main.o.d" -o ${OBJECTDIR}/_ext/274453142/main.o ../HW4/HW4.X/main.c     
+${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/main.o.d 
+	@${RM} ${OBJECTDIR}/main.o 
+	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c     
 	
 else
-${OBJECTDIR}/_ext/274453142/I2C.o: ../HW4/HW4.X/I2C.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/274453142" 
-	@${RM} ${OBJECTDIR}/_ext/274453142/I2C.o.d 
-	@${RM} ${OBJECTDIR}/_ext/274453142/I2C.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/274453142/I2C.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/274453142/I2C.o.d" -o ${OBJECTDIR}/_ext/274453142/I2C.o ../HW4/HW4.X/I2C.c     
+${OBJECTDIR}/I2C.o: I2C.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/I2C.o.d 
+	@${RM} ${OBJECTDIR}/I2C.o 
+	@${FIXDEPS} "${OBJECTDIR}/I2C.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/I2C.o.d" -o ${OBJECTDIR}/I2C.o I2C.c     
 	
-${OBJECTDIR}/_ext/274453142/SPI.o: ../HW4/HW4.X/SPI.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/274453142" 
-	@${RM} ${OBJECTDIR}/_ext/274453142/SPI.o.d 
-	@${RM} ${OBJECTDIR}/_ext/274453142/SPI.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/274453142/SPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/274453142/SPI.o.d" -o ${OBJECTDIR}/_ext/274453142/SPI.o ../HW4/HW4.X/SPI.c     
+${OBJECTDIR}/SPI.o: SPI.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/SPI.o.d 
+	@${RM} ${OBJECTDIR}/SPI.o 
+	@${FIXDEPS} "${OBJECTDIR}/SPI.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/SPI.o.d" -o ${OBJECTDIR}/SPI.o SPI.c     
 	
-${OBJECTDIR}/_ext/274453142/main.o: ../HW4/HW4.X/main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/274453142" 
-	@${RM} ${OBJECTDIR}/_ext/274453142/main.o.d 
-	@${RM} ${OBJECTDIR}/_ext/274453142/main.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/274453142/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/274453142/main.o.d" -o ${OBJECTDIR}/_ext/274453142/main.o ../HW4/HW4.X/main.c     
+${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/main.o.d 
+	@${RM} ${OBJECTDIR}/main.o 
+	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main.o.d" -o ${OBJECTDIR}/main.o main.c     
 	
 endif
 
