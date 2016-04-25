@@ -19,7 +19,7 @@
 #pragma config OSCIOFNC = OFF // free up secondary osc pins
 #pragma config FPBDIV = DIV_1 // divide CPU freq by 1 for peripheral bus clock
 #pragma config FCKSM = CSDCMD // do not enable clock switch
-#pragma config WDTPS = 00000              /////// slowest wdt?? PS1048576 
+#pragma config WDTPS = PS1              /////// slowest wdt?? PS1048576 
 #pragma config WINDIS = OFF // no wdt window
 #pragma config FWDTEN = OFF // wdt off by default
 #pragma config FWDTWINSZ = WINSZ_25 // wdt window at 25%
@@ -52,33 +52,34 @@ int main() {
 
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0;
-    
-   TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
-   LATAbits.LATA4 = 1;          // make LED pin "high" (1) = "on"
-   TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
+   
+    //do your TRIS and LAT commands here 
+    TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
+    LATAbits.LATA4 = 1;          // make LED pin "high" (1) = "on"
+    TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
    
    init_SPI1();
    
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
      
+      
+    
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		// remember the core timer runs at half the CPU speed
-           
-        while(!PORTBbits.RB4) {             // when  reset button is pressed, 
+          
+        delay(6000);
+        setVoltage(0b1,0b10101000);         //  and voltage is set on CH1
+        
+        while(!PORTBbits.RB4) {             // when user button is pressed, 
             LATAbits.LATA4 = 0;                 // green LED is off
-            setVoltage(0b1,0b10101000);         //  and voltage is set on CH1 
         }
         
         if(_CP0_GET_COUNT() > 12000) {              // every x sec.. 
             LATAbits.LATA4 = !LATAbits.LATA4;       // toggle green LED
             _CP0_SET_COUNT(0);
         }
-        //if(_CP0_GET_COUNT()==40000 ){   //40 M ticks per second so ...
-          //  _CP0_SET_COUNT(0);
-            //LATAINV=0x10; 
-       // }
         
     }
      

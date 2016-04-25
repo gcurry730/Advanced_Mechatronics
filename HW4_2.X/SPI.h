@@ -6,5 +6,6 @@
 void init_SPI1(void);
 char SPI1_IO(char write);
 void setVoltage(char channel, char voltage);
+void delay(int time);
 
 #endif
