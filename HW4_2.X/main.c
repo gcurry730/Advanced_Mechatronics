@@ -70,7 +70,7 @@ int main() {
 		// remember the core timer runs at half the CPU speed
           
         delay(6000);
-        setVoltage(0b1,0b10101000);         //  and voltage is set on CH1
+        setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
         
         while(!PORTBbits.RB4) {             // when user button is pressed, 
             LATAbits.LATA4 = 0;                 // green LED is off
