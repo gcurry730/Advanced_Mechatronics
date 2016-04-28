@@ -1,6 +1,8 @@
 #include "SPI.h" 
 #include <xc.h>
+#include <math.h>
 #define CS LATAbits.LATA0       // chip select pin = A0
+#define pi 3.14159
 
 void init_SPI1(void){
 	ANSELAbits.ANSA0 = 0; 		// turn off analog for pin A0
@@ -48,4 +50,13 @@ void delay(int time) {
     ;
     }
    
+}
+
+char make_sine_wave(void){
+    char voltage;
+    int i;
+    for (i=0; i < 100; ++i){
+        voltage = floor(255*sin((i*2*pi)/100));
+        return voltage;
+    }
 }

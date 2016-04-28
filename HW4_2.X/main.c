@@ -1,5 +1,6 @@
 #include "SPI.h" 
 #include "I2C.h"
+#include <math.h>
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
 
@@ -38,6 +39,10 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
+// Constants
+#define NUM_SAMPS 100
+#define PI 3.14159
+
 int main() {
 	 __builtin_disable_interrupts();
 
@@ -62,15 +67,44 @@ int main() {
    
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
-     
-      
+   
+    // initialize counters  
+    int i = 0;   
+    int j = 0;
     
     while(1) {
 	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 		// remember the core timer runs at half the CPU speed
           
-        delay(6000);
-        setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
+        delay(6000);                        // controls frequency
+        //setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
+        
+        //Sine Wave
+        char voltage_sine;
+        if (i <= NUM_SAMPS){
+            voltage_sine = floor(255*sin((i*2*PI)/NUM_SAMPS));    
+            setVoltage(0b1, voltage_sine);
+            i++;
+        }
+        else{
+            i=0;    // start loop over
+        }
+        
+        // Triangular Wave
+        char voltage_tri;
+        if (j <= NUM_SAMPS/2){
+            voltage_tri = floor(255*(j/100));    
+            setVoltage(0b0, voltage_tri);
+            j++;
+        }
+        else if (j > NUM_SAMPS/2){
+            voltage_tri = - floor(255*(j/100));
+            setVoltage(0b0, voltage_tri);
+            j++;
+        }
+        else{
+            j=0;    //start loop over
+        }
         
         while(!PORTBbits.RB4) {             // when user button is pressed, 
             LATAbits.LATA4 = 0;                 // green LED is off
