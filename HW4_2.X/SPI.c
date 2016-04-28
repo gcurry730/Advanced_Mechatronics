@@ -33,7 +33,7 @@ char SPI1_IO(char write){
 void setVoltage(char channel, char voltage){
 	short data = 0b0000000000000000;
 	data |= channel << 15;			// puts channel in the 16th bit by shifting it by 15
-	data |= 0b111 << 12;			// makes next three bits 1 by bit-shifting them by 12
+    data |= 0b111 << 12;			// makes next three bits 1 by bit-shifting them by 12
 	data |= voltage << 4; 			// voltage stored in the next 8 bits
 	
     CS = 0;
@@ -50,13 +50,4 @@ void delay(int time) {
     ;
     }
    
-}
-
-char make_sine_wave(void){
-    char voltage;
-    int i;
-    for (i=0; i < 100; ++i){
-        voltage = floor(255*sin((i*2*pi)/100));
-        return voltage;
-    }
 }

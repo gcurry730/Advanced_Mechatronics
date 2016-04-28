@@ -79,32 +79,32 @@ int main() {
         delay(6000);                        // controls frequency
         //setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
         
-        //Sine Wave
+        //Sine Wave & Triangular Wave
         char voltage_sine;
+        char voltage_tri;
         if (i <= NUM_SAMPS){
-            voltage_sine = floor(255*sin((i*2*PI)/NUM_SAMPS));    
+            voltage_sine = floor(127*(sin((i*2*PI)/NUM_SAMPS)+ 1));    
             setVoltage(0b1, voltage_sine);
-            i++;
+            ++i;
+            voltage_tri = floor(127*(j/100));    
+            setVoltage(0b0, voltage_tri);
+            ++j;
         }
         else{
             i=0;    // start loop over
+            j=0;    // start loop over
         }
         
         // Triangular Wave
-        char voltage_tri;
-        if (j <= NUM_SAMPS/2){
-            voltage_tri = floor(255*(j/100));    
-            setVoltage(0b0, voltage_tri);
-            j++;
-        }
-        else if (j > NUM_SAMPS/2){
-            voltage_tri = - floor(255*(j/100));
-            setVoltage(0b0, voltage_tri);
-            j++;
-        }
-        else{
-            j=0;    //start loop over
-        }
+       // char voltage_tri;
+        //if (j <= NUM_SAMPS/2){
+          //  voltage_tri = floor(127*(j/100));    
+            //setVoltage(0b0, voltage_tri);
+            //++j;
+        //}
+        //else{
+          //  j=0;    //start loop over
+        //}
         
         while(!PORTBbits.RB4) {             // when user button is pressed, 
             LATAbits.LATA4 = 0;                 // green LED is off
