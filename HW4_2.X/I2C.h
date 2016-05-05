@@ -4,6 +4,9 @@
 // I2C communication library for PIC32 (master) and Expander MCP23008 (slave)  
 
 void initI2C(void);
+void initExpander(void);
+void setExpander(char pin, char level);
+char getExpander(void);
 
 
 void i2c_master_setup(void);

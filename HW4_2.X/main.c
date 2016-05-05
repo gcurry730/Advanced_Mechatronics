@@ -64,6 +64,8 @@ int main() {
     TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
    
    init_SPI1();
+   initI2C();
+   initExpander();
    
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
@@ -78,6 +80,7 @@ int main() {
           
         delay(6000);                        // controls frequency
         //setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
+        setExpander(0,1); //pin=0 level= 1 (high)
         
         //Sine Wave & Triangular Wave
         char voltage_sine;
@@ -85,14 +88,15 @@ int main() {
         if (i <= NUM_SAMPS){
             voltage_sine = floor(127*(sin((i*2*PI)/NUM_SAMPS)+ 1));    
             setVoltage(0b1, voltage_sine);
-            ++i;
-            voltage_tri = floor(127*(j/100));    
+            
+            voltage_tri = floor(127*(i/100));    
             setVoltage(0b0, voltage_tri);
-            ++j;
+            //++j;
+            ++i;
         }
         else{
             i=0;    // start loop over
-            j=0;    // start loop over
+            //j=0;    // start loop over
         }
         
         // Triangular Wave
