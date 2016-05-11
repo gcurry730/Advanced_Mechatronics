@@ -40,7 +40,7 @@
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
 // Constants
-#define NUM_SAMPS 100
+#define NUM_SAMPS 1000
 #define PI 3.14159
 
 int main() {
@@ -64,8 +64,8 @@ int main() {
     TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
    
    init_SPI1();
-   initI2C();
-   initExpander();
+   //initI2C();
+   //initExpander();
    
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
@@ -80,44 +80,47 @@ int main() {
           
         delay(6000);                        // controls frequency
         //setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
-        setExpander(0,1); //pin=0 level= 1 (high)
+        
+        //setExpander(0,1); //pin=0 level= 1 (high)
         
         //Sine Wave & Triangular Wave
         char voltage_sine;
         char voltage_tri;
+        float x;
         if (i <= NUM_SAMPS){
             voltage_sine = floor(127*(sin((i*2*PI)/NUM_SAMPS)+ 1));    
             setVoltage(0b1, voltage_sine);
             
-            voltage_tri = floor(127*(i/100));    
+            x= (float)j/NUM_SAMPS;
+            voltage_tri = floor(250*x);    
             setVoltage(0b0, voltage_tri);
-            //++j;
-            ++i;
+            ++j;
+            i = i + 2;
         }
         else{
             i=0;    // start loop over
-            //j=0;    // start loop over
+            j=0;    // start loop over
         }
         
         // Triangular Wave
-       // char voltage_tri;
-        //if (j <= NUM_SAMPS/2){
-          //  voltage_tri = floor(127*(j/100));    
-            //setVoltage(0b0, voltage_tri);
-            //++j;
-        //}
-        //else{
-          //  j=0;    //start loop over
-        //}
+//        if (j <= NUM_SAMPS){
+//          x= (float)j/100;
+//            voltage_tri = floor(127*x);    
+//            setVoltage(0b0, voltage_tri);
+//            ++j;
+//        }
+//        else{
+//            j=0;    //start loop over
+//        }
+//        
+//        while(!PORTBbits.RB4) {             // when user button is pressed, 
+//            LATAbits.LATA4 = 0;                 // green LED is off
+//        }
         
-        while(!PORTBbits.RB4) {             // when user button is pressed, 
-            LATAbits.LATA4 = 0;                 // green LED is off
-        }
-        
-        if(_CP0_GET_COUNT() > 12000) {              // every x sec.. 
-            LATAbits.LATA4 = !LATAbits.LATA4;       // toggle green LED
-            _CP0_SET_COUNT(0);
-        }
+//        if(_CP0_GET_COUNT() > 12000) {              // every x sec.. 
+//            LATAbits.LATA4 = !LATAbits.LATA4;       // toggle green LED
+//            _CP0_SET_COUNT(0);
+//        }
         
     }
      
