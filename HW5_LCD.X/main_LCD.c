@@ -1,5 +1,4 @@
-#include "SPI.h" 
-#include "I2C.h"
+#include "ILI9163C.h" 
 #include <math.h>
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
@@ -39,10 +38,6 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
-// Constants
-#define NUM_SAMPS 1000
-#define PI 3.14159
-
 int main() {
 	 __builtin_disable_interrupts();
 
@@ -59,57 +54,26 @@ int main() {
     LATAbits.LATA4 = 1;          // make GREEN LED pin "high" (1) = "on"
     TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
    
-   //init_SPI1();
-   initI2C();
-   initExpander();
+   LCD_init();
+   SPI1_init();
    
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
-   
-    // initialize counters  
-    int i = 0;   
-    int j = 0;
-    
-    while(1) {
-	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-		// remember the core timer runs at half the CPU speed
-          
-        //delay(6000);                        // controls frequency
-        //setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
-        
-        //setExpander(0,1); //pin=GP0 level= 1 (high)
-        if(getExpander() == 0b10000000){
-            setExpander(0,1); //pin=GP0 level= 1 (high)
-        }
-        
-        //////Sine Wave & Triangular Wave/////////
-//        char voltage_sine;
-//        char voltage_tri;
-//        float x;
-//        if (i <= NUM_SAMPS){
-//            voltage_sine = floor(127*(sin((i*2*PI)/NUM_SAMPS)+ 1));    
-//            setVoltage(0b1, voltage_sine);
-//            
-//            x= (float)j/NUM_SAMPS;
-//            voltage_tri = floor(250*x);    
-//            setVoltage(0b0, voltage_tri);
-//            ++j;
-//            i = i + 2;
-//        }
-//        else{
-//            i=0;    // start loop over
-//            j=0;    // start loop over
-//        }
-        
-//        while(!PORTBbits.RB4) {             // when user button is pressed, 
-//            LATAbits.LATA4 = 0;                 // green LED is off
-//        }
-        
-//        if(_CP0_GET_COUNT() > 12000) {              // every x sec.. 
-//            LATAbits.LATA4 = !LATAbits.LATA4;       // toggle green LED
-//            _CP0_SET_COUNT(0);
-//        }
-        
-    }
+ 
+    //char array[100];
+    //sprintf(array, "Hi");
+    //LCD_drawString(array);
+    //red = 0xF800
+    LCD_drawPixel(0, 0, 0xF800);
+    LCD_drawPixel(1, 1, 0xF800);
+    LCD_drawPixel(2, 2, 0xF800);
+    LCD_drawPixel(3, 3, 0xF800);
+     //LCD_drawCharacter(0,0,0x30);
+             
+//    while(1) {
+//	    
+//      ;  //delay(6000);                        // controls frequency, 24,000,000/X
+//        
+//    }
      
 }
