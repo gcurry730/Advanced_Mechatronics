@@ -2,22 +2,38 @@
 // The functions must be called in the correct order as per the I2C protocol
 // Change I2C1 to the I2C channel you are using
 // I2C pins need pull-up resistors, 2k-10k
-#include "I2C.h"
+
+#include "I2C_IMU.h"
 #include <xc.h>
-#define ADDR_W 0x40 //for 0100(A2)(A1)(A0)0 = 01000000 = 0x40 (only for writing, last bit is 0)
-#define  ADDR_R 0x41 //slave read address = 01000001
+
+#define SLAVE_ADDRESS_W  0b11010101
+#define SLAVE_ADDRESS_R  0b11010100
 
 unsigned char WhoAreYou(){
     unsigned char read;
     i2c_master_start();
-    i2c_master_send(ADDR_W);
-    i2c_master_send(0x0F); 
+    i2c_master_send(SLAVE_ADDRESS_W);
+    i2c_master_send(0x0F);  //WHO_AM_I register
     i2c_master_restart();
-    i2c_master_send(ADDR_R);
+    i2c_master_send(SLAVE_ADDRESS_R);
     read = i2c_master_recv();
     i2c_master_ack(1);
     i2c_master_stop();
     return read;  
+}
+
+void initIMU(void){
+    i2c_master_start();
+    i2c_master_send(SLAVE_ADDRESS_W);
+    i2c_master_send(0x10); // CTRL1_XL register
+    i2c_master_send(0b00000001); // powers accel, low power mode?
+    i2c_master_stop();
+    
+    i2c_master_start();
+    i2c_master_send(SLAVE_ADDRESS_W);
+    i2c_master_send(0x11); // CTRL2_G register
+    i2c_master_send(0b00000001); // powers gyro, low power mode?
+    i2c_master_stop();
 }
 void initI2C(void){
     // Turn off analog for pins B2, B3 using ANSELB
@@ -27,50 +43,12 @@ void initI2C(void){
     i2c_master_setup();
 }
 
-void initExpander(void){
-    // Initialize pins GP0-3 as outputs, GP4-7 as inputs
-    i2c_master_start();             // make the start bit
-    i2c_master_send(ADDR_W);        // send to specific chip address
-    i2c_master_send(0x00);          // I/ODIR register
-    i2c_master_send(0b11110000);    // data to send
-    i2c_master_stop();              // send stop bit
-   // Initialize GP0-3 to 0 
-    i2c_master_start();             // make the start bit
-    i2c_master_send(ADDR_W);        // send to specific chip address
-    i2c_master_send(0x09);          // GPIO output latch register
-    i2c_master_send(0b00000000);    // set GP0-3 to output 0 
-    i2c_master_stop();              // send stop bit
-}
-
-void setExpander(char pin, char level){        // pin can be 0, 1, 2, 3   Level is 0 or 1
-i2c_master_start(); // make the start bit
-i2c_master_send(ADDR_W); // (000<1|0)write the address, 000, shifted left by 1, or'ed with a 0 to indicate writing
-i2c_master_send(0x09); // the register to write to (general purpose I/O)
-i2c_master_send(level<pin); // the value to put in the register
-i2c_master_stop(); // make the stop bit
-}
-
-char getExpander(void){
-i2c_master_start();         // make the start bit
-i2c_master_send(ADDR_W);    // write the address, 000, shifted left by 1, or'ed with a 0 to indicate writing
-i2c_master_send(0x09);      // the register to read from (general purpose I/O)
-i2c_master_restart();       // make the restart bit
-
-i2c_master_send(ADDR_R);    // write the address, 000, shifted left by 1, or'ed with a 1 to indicate reading
-char r = i2c_master_recv(); // save the value returned
-i2c_master_ack(1);          // make the ack so the slave knows we got it
-i2c_master_stop();          // make the stop bit
-return r;
-}
-
-
 void i2c_master_setup(void) {
   I2C2BRG = 390;            // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2 ((=100Khz)) 390?
                                     // look up PGD for your PIC32
   I2C2CONbits.ON = 1;               // turn on the I2C2 module
 }
 
-// Start a transmission on the I2C bus
 void i2c_master_start(void) {
     I2C2CONbits.SEN = 1;            // send the start bit
     while(I2C2CONbits.SEN) { ; }    // wait for the start bit to be sent
@@ -103,6 +81,13 @@ void i2c_master_ack(int val) {        // sends ACK = 0 (slave should send anothe
 }
 
 void i2c_master_stop(void) {          // send a STOP:
-  I2C2CONbits.PEN = 1;                // comm is complete and master relinquishes bus
-  while(I2C2CONbits.PEN) { ; }        // wait for STOP to complete
+    I2C2CONbits.PEN = 1;                // comm is complete and master relinquishes bus
+    while(I2C2CONbits.PEN) { ; }        // wait for STOP to complete
+}
+
+void delay(int time) {
+    int delaytime = time; //in hz, core timer freq is half sysfreq
+    int starttime;
+    starttime = _CP0_GET_COUNT(); 
+    while ((int)_CP0_GET_COUNT()-starttime < delaytime){ ; }
 }
