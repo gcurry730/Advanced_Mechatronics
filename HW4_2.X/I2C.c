@@ -4,73 +4,16 @@
 // I2C pins need pull-up resistors, 2k-10k
 #include "I2C.h"
 #include <xc.h>
-#define ADDR_W 0x40 //for 0100(A2)(A1)(A0)0 = 01000000 = 0x40 (only for writing, last bit is 0)
-#define  ADDR_R 0x41 //slave read address = 01000001
+#define EXPANDER 0b00100000 // for MCP23008 with A0, A1, A2 = 0,0,0
 
-unsigned char WhoAreYou(){
-    unsigned char read;
-    i2c_master_start();
-    i2c_master_send(ADDR_W);
-    i2c_master_send(0x0F); 
-    i2c_master_restart();
-    i2c_master_send(ADDR_R);
-    read = i2c_master_recv();
-    i2c_master_ack(1);
-    i2c_master_stop();
-    return read;  
-}
-void initI2C(void){
-    // Turn off analog for pins B2, B3 using ANSELB
-    ANSELBbits.ANSB2 = 0;
-    ANSELBbits.ANSB3 = 0;
-    // SDA2 is fixed to B2 and SCL2 is B3
-    i2c_master_setup();
-}
-
-void initExpander(void){
-    // Initialize pins GP0-3 as outputs, GP4-7 as inputs
-    i2c_master_start();             // make the start bit
-    i2c_master_send(ADDR_W);        // send to specific chip address
-    i2c_master_send(0x00);          // I/ODIR register
-    i2c_master_send(0b11110000);    // data to send
-    i2c_master_stop();              // send stop bit
-   // Initialize GP0-3 to 0 
-    i2c_master_start();             // make the start bit
-    i2c_master_send(ADDR_W);        // send to specific chip address
-    i2c_master_send(0x09);          // GPIO output latch register
-    i2c_master_send(0b00000000);    // set GP0-3 to output 0 
-    i2c_master_stop();              // send stop bit
-}
-
-void setExpander(char pin, char level){        // pin can be 0, 1, 2, 3   Level is 0 or 1
-i2c_master_start(); // make the start bit
-i2c_master_send(ADDR_W); // (000<1|0)write the address, 000, shifted left by 1, or'ed with a 0 to indicate writing
-i2c_master_send(0x09); // the register to write to (general purpose I/O)
-i2c_master_send(level<pin); // the value to put in the register
-i2c_master_stop(); // make the stop bit
-}
-
-char getExpander(void){
-i2c_master_start();         // make the start bit
-i2c_master_send(ADDR_W);    // write the address, 000, shifted left by 1, or'ed with a 0 to indicate writing
-i2c_master_send(0x09);      // the register to read from (general purpose I/O)
-i2c_master_restart();       // make the restart bit
-
-i2c_master_send(ADDR_R);    // write the address, 000, shifted left by 1, or'ed with a 1 to indicate reading
-char r = i2c_master_recv(); // save the value returned
-i2c_master_ack(1);          // make the ack so the slave knows we got it
-i2c_master_stop();          // make the stop bit
-return r;
-}
-
+/////// Given Functions ///////
 
 void i2c_master_setup(void) {
-  I2C2BRG = 390;            // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2 ((=100Khz)) 390?
+  I2C2BRG = 235;            // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2  Fsck = baud rate (100khz) PGD = 104ns Pblck = 48mhz
                                     // look up PGD for your PIC32
   I2C2CONbits.ON = 1;               // turn on the I2C2 module
 }
 
-// Start a transmission on the I2C bus
 void i2c_master_start(void) {
     I2C2CONbits.SEN = 1;            // send the start bit
     while(I2C2CONbits.SEN) { ; }    // wait for the start bit to be sent
@@ -105,4 +48,52 @@ void i2c_master_ack(int val) {        // sends ACK = 0 (slave should send anothe
 void i2c_master_stop(void) {          // send a STOP:
   I2C2CONbits.PEN = 1;                // comm is complete and master relinquishes bus
   while(I2C2CONbits.PEN) { ; }        // wait for STOP to complete
+}
+
+////// Functions for Expander //////
+
+void initExpander(void){
+    // SDA2 is fixed to B2 and SCL2 is B3
+    // Turn off analog for pins B2, B3 using ANSELB
+    ANSELBbits.ANSB2 = 0;
+    ANSELBbits.ANSB3 = 0;
+    // disable SEQOP
+    i2c_master_write(EXPANDER,0x05,0b00100000);
+    // Initialize pins GP0 as output, GP4-7 as inputs
+    i2c_master_write(EXPANDER,0x00,0b11111110);
+}
+
+void setExpander(int level, int pin){  // pin can be 0, 1, 2, 3 etc..   Level is 0 or 1
+    unsigned char data = 0b00000000;
+    data = (data|level)<<pin;
+    i2c_master_write(EXPANDER, 0x09, data);
+}
+
+unsigned char getExpander(void){
+    unsigned char r;
+    r = i2c_master_read(EXPANDER, 0x09);
+    return r;
+}
+
+//////// General I2C functions //////
+
+void i2c_master_write(unsigned char ADDRESS, unsigned char REGISTER, unsigned char data) {
+    i2c_master_start();
+    i2c_master_send(ADDRESS<<1);
+    i2c_master_send(REGISTER);
+    i2c_master_send(data);
+    i2c_master_stop();
+}
+
+unsigned char i2c_master_read(unsigned char ADDRESS,unsigned char REGISTER){
+    unsigned char r = 0;
+    i2c_master_start();
+    i2c_master_send(ADDRESS<<1);
+    i2c_master_send(REGISTER);
+    i2c_master_restart();
+    i2c_master_send(ADDRESS<<1|1);
+    r = i2c_master_recv();
+    i2c_master_ack(1);
+    i2c_master_stop();
+return r;
 }

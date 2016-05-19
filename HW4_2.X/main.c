@@ -42,6 +42,11 @@
 // Constants
 #define NUM_SAMPS 1000
 #define PI 3.14159
+#define IODIR 0x00
+#define IOCON 0x05
+#define GPIO  0x09
+#define OLAT 0x0A
+#define EXPANDER 0b00100000 // for MCP23008 with A0, A1, A2 = 0,0,0
 
 int main() {
 	 __builtin_disable_interrupts();
@@ -54,43 +59,42 @@ int main() {
     INTCONbits.MVEC = 0x1;
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0; 
-    //do your TRIS and LAT commands here 
-    TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
+    // do your TRIS and LAT commands here 
+    TRISAbits.TRISA4 = 0;        // Pin A4 is the GREEN LED, 0 for output
     LATAbits.LATA4 = 1;          // make GREEN LED pin "high" (1) = "on"
     TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
-   
+    TRISBbits.TRISB2 = 0;        // B2 and B3 set to output for LCD 
+    TRISBbits.TRISB3 = 0;
+    TRISBbits.TRISB15 = 0;       // B15 set to output 
+    // initialize peripherals and chips
    //init_SPI1();
-   initI2C();
-   initExpander();
+    i2c_master_setup();
+    initExpander(); //
    
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
    
-    // initialize counters  
+//    // initialize counters for SPI 
 //    int i = 0;   
 //    int j = 0;
-    
-    //WhoAreYou();
+    // initialize reads for I2C
+    unsigned char I2C_read = 0;
     
     while(1) {
-	    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-		// remember the core timer runs at half the CPU speed
-          
-        delay(6000);                            // controls frequency
-        //setVoltage(0b1,0b01010101);         //  and voltage is set on CH1
+        //delay(6000);                      // controls frequency
         
-   
-        if(WhoAreYou() == 0b01101001){
-            LATAbits.LATA4 = !LATAbits.LATA4;  //toggle LED
+        /////// i2c test ///////// 
+        I2C_read = getExpander();
+        I2C_read = (I2C_read>>7); //look at pin 0 only
+        if (I2C_read){ // if button is pressed
+            setExpander(1,0); // level (high), pin number (GP0)
         }
-        //setExpander(0,1); //pin=GP0 level= 1 (high)
-        //setExpander(0,1);
+        else {
+            setExpander(0,0);
+        }
         
-//        if(getExpander() == 0b00000000){ // if GP7 (push button) is low
-//            setExpander(0,1); //pin=GP0 level= 1 (high)
-//        }
-        
-        //////Sine Wave & Triangular Wave/////////
+
+        ////// SPI: Sine Wave & Triangular Wave /////////
 //        char voltage_sine;
 //        char voltage_tri;
 //        float x;
@@ -108,11 +112,11 @@ int main() {
 //            i=0;    // start loop over
 //            j=0;    // start loop over
 //        }
-        
+        //////// Push Button Test ///////
 //        while(!PORTBbits.RB4) {             // when user button is pressed, 
 //            LATAbits.LATA4 = 0;                 // green LED is off
 //        }
-        
+        //////// Frequency Check ////////
 //        if(_CP0_GET_COUNT() > 12000) {              // every x sec.. 
 //            LATAbits.LATA4 = !LATAbits.LATA4;       // toggle green LED
 //            _CP0_SET_COUNT(0);
