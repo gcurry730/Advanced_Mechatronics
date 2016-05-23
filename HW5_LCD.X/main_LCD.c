@@ -19,7 +19,7 @@
 #pragma config OSCIOFNC = OFF // free up secondary osc pins
 #pragma config FPBDIV = DIV_1 // divide CPU freq by 1 for peripheral bus clock
 #pragma config FCKSM = CSDCMD // do not enable clock switch
-#pragma config WDTPS = PS1              /////// slowest wdt?? PS1048576 
+#pragma config WDTPS = PS1048576              /////// slowest wdt?? PS1048576 or PS1
 #pragma config WINDIS = OFF // no wdt window
 #pragma config FWDTEN = OFF // wdt off by default
 #pragma config FWDTWINSZ = WINSZ_25 // wdt window at 25%
@@ -50,30 +50,39 @@ int main() {
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0; 
     //do your TRIS and LAT commands here 
-    TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
+    //TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
+    //TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
+//    TRISA = 0b1111111111101100; // pins A4(GREEN LED), and A0, A1 are outputs
+//    TRISB = 0b0011111101110011; // pins B2 (I2C), B3(I2C), B7(CS-LCD), B8= input, and B14(SPI/LCD), B15(LCD) are outputs; B4 (RESET) is an input
+    TRISA = 0xFFCF; 
+    TRISB = 0b0001111001110011;
     LATAbits.LATA4 = 1;          // make GREEN LED pin "high" (1) = "on"
-    TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
-   
-   LCD_init();
-   SPI1_init();
+    
+    SPI1_init();
+    LCD_init();
+    LCD_clearScreen(0);
    
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
- 
-    //char array[100];
-    //sprintf(array, "Hi");
-    //LCD_drawString(array);
-    //red = 0xF800
-    LCD_drawPixel(0, 0, 0xF800);
-    LCD_drawPixel(1, 1, 0xF800);
-    LCD_drawPixel(2, 2, 0xF800);
-    LCD_drawPixel(3, 3, 0xF800);
-     //LCD_drawCharacter(0,0,0x30);
+     
+    LCD_drawPixel(0, 0, BLACK);
+    LCD_drawPixel(1, 1, BLACK);
+    LCD_drawPixel(2, 2, BLACK);
+    LCD_drawPixel(3, 3, BLACK);
+    
+    
+    char length = 0;
+    char textbuffer[20];
+    int leet = 1337;
+    sprintf(textbuffer,"Hello world %d!",leet);
              
-//    while(1) {
-//	    
-//      ;  //delay(6000);                        // controls frequency, 24,000,000/X
-//        
-//    }
+    while(1) {
+        length = sizeof(textbuffer);//size must be taken here otherwise pointer size is taken instead of 
+        LCD_drawString(28,32,textbuffer);
+ 
+	    
+        delay(960000);                        // controls frequency, 24,000,000/X
+        
+    }
      
 }

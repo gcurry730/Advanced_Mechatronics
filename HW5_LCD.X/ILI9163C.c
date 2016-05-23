@@ -16,24 +16,21 @@
 #include <xc.h>
 #include "ILI9163C.h"
 
-#define black 0x0000
-#define white 0x1111
-
 
 void SPI1_init() {
-	SDI1Rbits.SDI1R = 0b0100; // B8 is SDI1
-    RPA1Rbits.RPA1R = 0b0011; // A1 is SDO1
-    TRISBbits.TRISB7 = 0; // SS is B7
-    LATBbits.LATB7 = 1; // SS starts high
+	SDI1Rbits.SDI1R = 0b0000; // A1 is SDI1 (used to be B8)
+    RPB13Rbits.RPB13R = 0b0011; // B13 is SDO1  (used to be A1)
+    TRISBbits.TRISB15 = 0; // CS is B15 (used to be B7)
+    LATBbits.LATB15 = 1; // CS starts high
 
-    // A0 / DAT pin
-    ANSELBbits.ANSB15 = 0;
-    TRISBbits.TRISB15 = 0;
-    LATBbits.LATB15 = 0;
+    // A0 / DAT pin is A0 (used to be B15)
+    ANSELAbits.ANSA0 = 0;
+    TRISAbits.TRISA0 = 0;
+    LATAbits.LATA0 = 0;
 	
 	SPI1CON = 0; // turn off the spi module and reset it
     SPI1BUF; // clear the rx buffer by reading from it
-    SPI1BRG = 1; // baud rate to 12 MHz [SPI1BRG = (48000000/(2*desired))-1]
+    SPI1BRG = 0x1; // baud rate to 12 MHz [SPI1BRG = (48000000/(2*desired))-1]
     SPI1STATbits.SPIROV = 0; // clear the overflow bit
     SPI1CONbits.CKE = 1; // data changes when clock goes from hi to lo (since CKP is 0)
     SPI1CONbits.MSTEN = 1; // master operation
@@ -49,25 +46,25 @@ unsigned char spi_io(unsigned char o) {
 }
 
 void LCD_command(unsigned char com) {
-    LATBbits.LATB15 = 0; // DAT
-    LATBbits.LATB7 = 0; // CS
+    LATAbits.LATA0 = 0; // DAT
+    LATBbits.LATB15 = 0; // CS
     spi_io(com);
-    LATBbits.LATB7 = 1; // CS
+    LATBbits.LATB15 = 1; // CS
 }
 
 void LCD_data(unsigned char dat) {
-    LATBbits.LATB15 = 1; // DAT
-    LATBbits.LATB7 = 0; // CS
+    LATAbits.LATA0 = 1; // DAT
+    LATBbits.LATB15 = 0; // CS
     spi_io(dat);
-    LATBbits.LATB7 = 1; // CS
+    LATBbits.LATB15 = 1; // CS
 }
 
 void LCD_data16(unsigned short dat) {
-    LATBbits.LATB15 = 1; // DAT
-    LATBbits.LATB7 = 0; // CS
+    LATAbits.LATA0 = 1; // DAT
+    LATBbits.LATB15 = 0; // CS
     spi_io(dat>>8);
     spi_io(dat);
-    LATBbits.LATB7 = 1; // CS
+    LATBbits.LATB15 = 1; // CS
 }
 
 void LCD_init() {
@@ -206,25 +203,30 @@ void LCD_drawCharacter(unsigned short x, unsigned short y, char character){
             bitt = byte >> j;
             bitt= bitt & 1;
             if (bitt == 1){
-                LCD_drawPixel(x+i, y+i, black);
+                LCD_drawPixel(x+i, y+i, BLACK);
             };
             if (bitt == 0) {
-                LCD_drawPixel(x+i, y+i, white);
+                LCD_drawPixel(x+i, y+i, WHITE);
             };
         };
     };
 };
 
-void LCD_drawString(char *message){
+void LCD_drawString(unsigned short x, unsigned short y, char *message){
     int k; 
-    unsigned short x_init = 0;
-    unsigned short y_init = 0;
-          
+ 
     while(message[k] !=0 ){
-        LCD_drawCharacter(x_init, y_init, message[k]);
-        x_init= x_init+5;
+        LCD_drawCharacter(x, y, message[k]);
+        x= x+5;
         k++;
     }
 
 }
 
+void delay(int time) {
+    int delaytime = time; 
+    int starttime;
+    starttime = _CP0_GET_COUNT();
+    while ((int)_CP0_GET_COUNT()-starttime < delaytime){}
+ 
+}

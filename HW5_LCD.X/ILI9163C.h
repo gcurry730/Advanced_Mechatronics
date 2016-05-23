@@ -179,5 +179,6 @@ void LCD_clearScreen(unsigned short); // set the color of every pixel
 void SPI1_init(void);
 // mine:
 void LCD_drawCharacter(unsigned short, unsigned short, char);
-void LCD_drawString(char *);
+void LCD_drawString(unsigned short x, unsigned short y, char *message);
+void delay(int time);
 #endif
