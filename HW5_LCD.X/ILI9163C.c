@@ -15,22 +15,29 @@
 
 #include <xc.h>
 #include "ILI9163C.h"
+#define CS LATBbits.LATB7
 
 
 void SPI1_init() {
-	SDI1Rbits.SDI1R = 0b0000; // A1 is SDI1 (used to be B8)
-    RPB13Rbits.RPB13R = 0b0011; // B13 is SDO1  (used to be A1)
-    TRISBbits.TRISB15 = 0; // CS is B15 (used to be B7)
-    LATBbits.LATB15 = 1; // CS starts high
+//	SDI1Rbits.SDI1R = 0b0000; // A1 is SDI1 (used to be B8)
+//    RPB8Rbits.RPB8R = 0b0011; // B8 is SDO1  (used to be A1)
+//    TRISBbits.TRISB15 = 0; // CS is B15 (used to be B7)
+//    LATBbits.LATB15 = 1; // CS starts high
+//                        //SCK is B14
+    //ANSELAbits.ANSA0 = 0; 		// turn off analog for pin A0
+	TRISBbits.TRISB7 = 0;       // SS is B7
+    CS = 1;                     // SS starts high
+	SDI1Rbits.SDI1R = 0b000; 	// Sets SDI1 to pin A1 (INPUT, not used))
+	RPA1Rbits.RPA1R = 0b0011;   // A1 is SDO1
 
-    // A0 / DAT pin is A0 (used to be B15)
-    ANSELAbits.ANSA0 = 0;
-    TRISAbits.TRISA0 = 0;
-    LATAbits.LATA0 = 0;
+  // A0 / DAT pin
+    ANSELBbits.ANSB15 = 0;
+    TRISBbits.TRISB15 = 0;
+    LATBbits.LATB15 = 0;
 	
 	SPI1CON = 0; // turn off the spi module and reset it
     SPI1BUF; // clear the rx buffer by reading from it
-    SPI1BRG = 0x1; // baud rate to 12 MHz [SPI1BRG = (48000000/(2*desired))-1]
+    SPI1BRG = 0x300; // baud rate to 12 MHz [SPI1BRG = (48000000/(2*desired))-1]
     SPI1STATbits.SPIROV = 0; // clear the overflow bit
     SPI1CONbits.CKE = 1; // data changes when clock goes from hi to lo (since CKP is 0)
     SPI1CONbits.MSTEN = 1; // master operation
@@ -46,25 +53,25 @@ unsigned char spi_io(unsigned char o) {
 }
 
 void LCD_command(unsigned char com) {
-    LATAbits.LATA0 = 0; // DAT
-    LATBbits.LATB15 = 0; // CS
+    LATBbits.LATB15 = 0; // DAT
+    CS = 0; // CS
     spi_io(com);
-    LATBbits.LATB15 = 1; // CS
+    CS = 1; // CS
 }
 
 void LCD_data(unsigned char dat) {
-    LATAbits.LATA0 = 1; // DAT
-    LATBbits.LATB15 = 0; // CS
+    LATBbits.LATB15 = 1; // DAT
+    CS = 0; // CS
     spi_io(dat);
-    LATBbits.LATB15 = 1; // CS
+    CS = 1; // CS
 }
 
 void LCD_data16(unsigned short dat) {
-    LATAbits.LATA0 = 1; // DAT
-    LATBbits.LATB15 = 0; // CS
+    LATBbits.LATB15 = 1; // DAT
+    CS = 0; // CS
     spi_io(dat>>8);
     spi_io(dat);
-    LATBbits.LATB15 = 1; // CS
+    CS = 1; // CS
 }
 
 void LCD_init() {

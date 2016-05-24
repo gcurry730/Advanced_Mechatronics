@@ -19,7 +19,7 @@
 #pragma config OSCIOFNC = OFF // free up secondary osc pins
 #pragma config FPBDIV = DIV_1 // divide CPU freq by 1 for peripheral bus clock
 #pragma config FCKSM = CSDCMD // do not enable clock switch
-#pragma config WDTPS = PS1048576              /////// slowest wdt?? PS1048576 or PS1
+#pragma config WDTPS = PS1              /////// slowest wdt?? PS1048576 or PS1
 #pragma config WINDIS = OFF // no wdt window
 #pragma config FWDTEN = OFF // wdt off by default
 #pragma config FWDTWINSZ = WINSZ_25 // wdt window at 25%
@@ -54,9 +54,15 @@ int main() {
     //TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
 //    TRISA = 0b1111111111101100; // pins A4(GREEN LED), and A0, A1 are outputs
 //    TRISB = 0b0011111101110011; // pins B2 (I2C), B3(I2C), B7(CS-LCD), B8= input, and B14(SPI/LCD), B15(LCD) are outputs; B4 (RESET) is an input
-    TRISA = 0xFFCF; 
-    TRISB = 0b0001111001110011;
+//    TRISA = 0xFFCF; 
+//    TRISB = 0b0001111001110011;
+//    LATAbits.LATA4 = 1;          // make GREEN LED pin "high" (1) = "on"
+    TRISAbits.TRISA4 = 0;        // Pin A4 is the GREEN LED, 0 for output
     LATAbits.LATA4 = 1;          // make GREEN LED pin "high" (1) = "on"
+    TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
+    TRISBbits.TRISB2 = 0;        // B2 and B3 set to output for LCD 
+    TRISBbits.TRISB3 = 0;
+    TRISBbits.TRISB15 = 0;       // B15 set to output
     
     SPI1_init();
     LCD_init();
@@ -65,10 +71,10 @@ int main() {
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
      
-    LCD_drawPixel(0, 0, BLACK);
-    LCD_drawPixel(1, 1, BLACK);
-    LCD_drawPixel(2, 2, BLACK);
-    LCD_drawPixel(3, 3, BLACK);
+    LCD_drawPixel(49, 49, BLACK);
+    LCD_drawPixel(50, 50, BLACK);
+    LCD_drawPixel(51, 51, BLACK);
+    LCD_drawPixel(52, 52, BLACK);
     
     
     char length = 0;
@@ -81,7 +87,7 @@ int main() {
         LCD_drawString(28,32,textbuffer);
  
 	    
-        delay(960000);                        // controls frequency, 24,000,000/X
+        //delay(960000);                        // controls frequency, 24,000,000/X
         
     }
      
