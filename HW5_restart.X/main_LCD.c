@@ -1,7 +1,7 @@
-#include "ILI9163C.h" 
+#include "LCD.h"
 #include <math.h>
-#include <xc.h>           // processor SFR definitions
-#include <sys/attribs.h>  // __ISR macro
+#include<xc.h>           // processor SFR definitions
+#include<sys/attribs.h>  // __ISR macro
 
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
@@ -17,9 +17,9 @@
 #pragma config IESO = OFF // no switching clocks
 #pragma config POSCMOD = HS // high speed crystal mode
 #pragma config OSCIOFNC = OFF // free up secondary osc pins
-#pragma config FPBDIV = DIV_8 // divide CPU freq by 1 for peripheral bus clock
+#pragma config FPBDIV = DIV_1 // divide CPU freq by 1 for peripheral bus clock
 #pragma config FCKSM = CSDCMD // do not enable clock switch
-#pragma config WDTPS = PS1              /////// slowest wdt?? PS1048576 or PS1
+#pragma config WDTPS = PS1              /////// slowest wdt?? PS1048576 
 #pragma config WINDIS = OFF // no wdt window
 #pragma config FWDTEN = OFF // wdt off by default
 #pragma config FWDTWINSZ = WINSZ_25 // wdt window at 25%
@@ -38,6 +38,15 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
+// Constants
+#define NUM_SAMPS 1000
+#define PI 3.14159
+#define IODIR 0x00
+#define IOCON 0x05
+#define GPIO  0x09
+#define OLAT 0x0A
+#define EXPANDER 0b00100000 // for MCP23008 with A0, A1, A2 = 0,0,0
+
 int main() {
 	 __builtin_disable_interrupts();
 
@@ -49,43 +58,23 @@ int main() {
     INTCONbits.MVEC = 0x1;
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0; 
-    //do your TRIS and LAT commands here 
-    TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
-    TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
+    // do your TRIS and LAT commands here 
+    TRISAbits.TRISA4 = 0;        // Pin A4 is the GREEN LED, 0 for output
     LATAbits.LATA4 = 1;          // make GREEN LED pin "high" (1) = "on"
-//    TRISA = 0b1111111111101100; // pins A4(GREEN LED), and A0, A1 are outputs
-//    TRISB = 0b0011111101110011; // pins B2 (I2C), B3(I2C), B7(CS-LCD), B8= input, and B14(SPI/LCD), B15(LCD) are outputs; B4 (RESET) is an input
-//    TRISA = 0xFFCF; 
-//    TRISB = 0b0001111001110011;
-    
-
-    SPI1_init();
-    LCD_init();
-    LCD_clearScreen(0);
-   
+    TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
+    TRISBbits.TRISB2 = 0;        // B2 and B3 set to output for LCD 
+    TRISBbits.TRISB3 = 0;
+    TRISBbits.TRISB15 = 0;       // B15 set to output 
+    // initialize peripherals and chips
+   SPI1_init();
+   LCD_init();
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
-     
-//    LCD_drawPixel(49, 49, BLACK);
-//    LCD_drawPixel(50, 50, BLACK);
-//    LCD_drawPixel(51, 51, BLACK);
-//    LCD_drawPixel(52, 52, BLACK);
+     LCD_clearScreen(BLUE);
     
-    
-    char length = 0;
-    char textbuffer[20];
-    int leet = 1337;
-    sprintf(textbuffer,"Hello world %d!",leet);
-             
     while(1) {
-        length = sizeof(textbuffer);//size must be taken here otherwise pointer size is taken  
-        LCD_drawString(28,32,textbuffer);
-        LCD_drawPixel(49, 49, BLACK);
-        LCD_drawPixel(50, 50, BLACK);
-        LCD_drawPixel(51, 51, BLACK);
-        LCD_drawPixel(52, 52, BLACK);
-	    
-        delay(960000);                        // controls frequency, 24,000,000/X
+        LCD_drawPixel(50, 50, WHITE);
+        //delay(6000);                      // controls frequency
         
     }
      

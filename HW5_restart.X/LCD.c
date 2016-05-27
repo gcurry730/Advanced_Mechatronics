@@ -14,13 +14,10 @@
 // B8 is turned into SDI1 but is not used or connected to anything
 
 #include <xc.h>
-#include "ILI9163C.h"
-#define CS LATBbits.LATB7
-
+#include "LCD.h"
 
 void SPI1_init() {
-
-    SDI1Rbits.SDI1R = 0b0100; // B8 is SDI1
+	SDI1Rbits.SDI1R = 0b0100; // B8 is SDI1
     RPA1Rbits.RPA1R = 0b0011; // A1 is SDO1
     TRISBbits.TRISB7 = 0; // SS is B7
     LATBbits.LATB7 = 1; // SS starts high
@@ -32,7 +29,7 @@ void SPI1_init() {
 	
 	SPI1CON = 0; // turn off the spi module and reset it
     SPI1BUF; // clear the rx buffer by reading from it
-    SPI1BRG = 0x1; // baud rate to 12 MHz [SPI1BRG = (48000000/(2*desired))-1]
+    SPI1BRG = 1; // baud rate to 12 MHz [SPI1BRG = (48000000/(2*desired))-1]
     SPI1STATbits.SPIROV = 0; // clear the overflow bit
     SPI1CONbits.CKE = 1; // data changes when clock goes from hi to lo (since CKP is 0)
     SPI1CONbits.MSTEN = 1; // master operation
@@ -191,44 +188,4 @@ void LCD_clearScreen(unsigned short color) {
 		for (i = 0;i < _GRAMSIZE; i++){
 			LCD_data16(color);
 		}
-}
-
-// mine
-
-void LCD_drawCharacter(unsigned short x, unsigned short y, char character){
-    int i = 0;
-    for (i = 0; i <= 4; i++){
-        char byte= ASCII[character-0x20][i];
-        int j;
-        for (j = 7; j >= 0; j--){
-            char bitt;
-            bitt = byte >> j;
-            bitt= bitt & 1;
-            if (bitt == 1){
-                LCD_drawPixel(x+i, y+i, BLACK);
-            };
-            if (bitt == 0) {
-                LCD_drawPixel(x+i, y+i, WHITE);
-            };
-        };
-    };
-};
-
-void LCD_drawString(unsigned short x, unsigned short y, char *message){
-    int k; 
- 
-    while(message[k] !=0 ){
-        LCD_drawCharacter(x, y, message[k]);
-        x= x+5;
-        k++;
-    }
-
-}
-
-void delay(int time) {
-    int delaytime = time; 
-    int starttime;
-    starttime = _CP0_GET_COUNT();
-    while ((int)_CP0_GET_COUNT()-starttime < delaytime){}
- 
 }
