@@ -216,7 +216,6 @@ void LCD_drawCharacter(unsigned short x, unsigned short y, char character){
 
 void LCD_drawString(unsigned short x, unsigned short y, char *message){
     int k; 
- 
     while(message[k] !=0 ){
         LCD_drawCharacter(x, y, message[k]);
         x= x+5;

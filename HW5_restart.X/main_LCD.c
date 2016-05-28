@@ -71,9 +71,16 @@ int main() {
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
      LCD_clearScreen(BLUE);
+
+    char textbuffer[20];
+    int leet = 1337;
+    sprintf(textbuffer,"Hello World! %d!",leet);
+    
     
     while(1) {
         LCD_drawPixel(50, 50, WHITE);
+        //LCD_drawCharacter(28, 32, 'D');
+        LCD_type(28,32,textbuffer, BLACK);
         //delay(6000);                      // controls frequency
         
     }
