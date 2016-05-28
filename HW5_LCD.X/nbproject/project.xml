@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>HW5_restart</name>
+            <name>HW5_LCD</name>
             <creation-uuid>80340170-65f7-44f8-a811-4442ec40746e</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>

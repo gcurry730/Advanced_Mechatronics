@@ -1,4 +1,5 @@
-#include "I2C_IMU.h" 
+#include "LCD.h"
+#include "I2C_IMU.h"
 #include <math.h>
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
@@ -38,6 +39,14 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
+// Constants
+#define NUM_SAMPS 1000
+#define PI 3.14159
+#define IODIR 0x00
+#define IOCON 0x05
+#define GPIO  0x09
+#define OLAT 0x0A
+#define GYRO 0b1101011 
 
 int main() {
 	 __builtin_disable_interrupts();
@@ -50,22 +59,49 @@ int main() {
     INTCONbits.MVEC = 0x1;
     // disable JTAG to get pins back
     DDPCONbits.JTAGEN = 0; 
-    //do your TRIS and LAT commands here 
-    TRISAbits.TRISA4 = 0;        // Pin A4 is the LED, 0 for output
+    // do your TRIS and LAT commands here 
+    TRISAbits.TRISA4 = 0;        // Pin A4 is the GREEN LED, 0 for output
     LATAbits.LATA4 = 1;          // make GREEN LED pin "high" (1) = "on"
     TRISBbits.TRISB4 = 1;        // B4 (reset button) is an input pin
+    TRISBbits.TRISB2 = 0;        // B2 and B3 set to output for LCD 
+    TRISBbits.TRISB3 = 0;
+    TRISBbits.TRISB15 = 0;       // B15 set to output 
+    // initialize peripherals and chips
+   SPI1_init();
+   initI2C();
+   LCD_init();
+   init_IMU();
    
-    initI2C();
-    initIMU(void);
-            
+   
     __builtin_enable_interrupts();
      _CP0_SET_COUNT(0);
+     LCD_clearScreen(WHITE);
     
+    char textbuffer[20];
+    char textbuffer2[20];
+    int num = 7;
+    sprintf(textbuffer,"Hello World");
     
-    while(1) {  
-        delay(6000);                            // controls frequency
-        if(WhoAreYou() == 0b01101001){
-            LATAbits.LATA4 = !LATAbits.LATA4;  //toggle LED
-        }  
-    }    
+    //unsigned char read = WHO_AM_I();
+    unsigned char read = 0b01101001;
+    if(read == 0b01101001){
+        sprintf(textbuffer2,"TRUE");
+    }
+    else{
+        sprintf(textbuffer2,"False");
+    }
+    LCD_type(28,45,textbuffer2, BLACK);
+    LCD_drawPixel(50, 50, WHITE);
+    //LCD_drawCharacter(28, 32, 'D');
+    LCD_type(28,32,textbuffer, BLACK);
+
+    
+
+    
+    while(1) {
+        
+        //delay(6000);                      // controls frequency
+       
+    }
+     
 }

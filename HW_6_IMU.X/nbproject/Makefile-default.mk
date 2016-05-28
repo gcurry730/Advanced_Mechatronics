@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=I2C_IMU.c IMU_main.c
+SOURCEFILES_QUOTED_IF_SPACED=I2C_IMU.c IMU_main.c LCD.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/I2C_IMU.o ${OBJECTDIR}/IMU_main.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/I2C_IMU.o.d ${OBJECTDIR}/IMU_main.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/I2C_IMU.o ${OBJECTDIR}/IMU_main.o ${OBJECTDIR}/LCD.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/I2C_IMU.o.d ${OBJECTDIR}/IMU_main.o.d ${OBJECTDIR}/LCD.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/I2C_IMU.o ${OBJECTDIR}/IMU_main.o
+OBJECTFILES=${OBJECTDIR}/I2C_IMU.o ${OBJECTDIR}/IMU_main.o ${OBJECTDIR}/LCD.o
 
 # Source Files
-SOURCEFILES=I2C_IMU.c IMU_main.c
+SOURCEFILES=I2C_IMU.c IMU_main.c LCD.c
 
 
 CFLAGS=
@@ -106,6 +106,12 @@ ${OBJECTDIR}/IMU_main.o: IMU_main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/IMU_main.o 
 	@${FIXDEPS} "${OBJECTDIR}/IMU_main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/IMU_main.o.d" -o ${OBJECTDIR}/IMU_main.o IMU_main.c     
 	
+${OBJECTDIR}/LCD.o: LCD.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD.o.d 
+	@${RM} ${OBJECTDIR}/LCD.o 
+	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/LCD.o.d" -o ${OBJECTDIR}/LCD.o LCD.c     
+	
 else
 ${OBJECTDIR}/I2C_IMU.o: I2C_IMU.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -118,6 +124,12 @@ ${OBJECTDIR}/IMU_main.o: IMU_main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/IMU_main.o.d 
 	@${RM} ${OBJECTDIR}/IMU_main.o 
 	@${FIXDEPS} "${OBJECTDIR}/IMU_main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/IMU_main.o.d" -o ${OBJECTDIR}/IMU_main.o IMU_main.c     
+	
+${OBJECTDIR}/LCD.o: LCD.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD.o.d 
+	@${RM} ${OBJECTDIR}/LCD.o 
+	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/LCD.o.d" -o ${OBJECTDIR}/LCD.o LCD.c     
 	
 endif
 

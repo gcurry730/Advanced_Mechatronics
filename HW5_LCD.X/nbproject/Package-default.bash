@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/HW5_restart.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=HW5_restart.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=hw5restart.x/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/HW5_LCD.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=HW5_LCD.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=hw5lcd.x/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/hw5restart.x/bin
+makeDirectory ${TMPDIR}/hw5lcd.x/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/hw5restart.x.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/hw5lcd.x.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/hw5restart.x.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/hw5lcd.x.tar *
 checkReturnCode
 
 # Cleanup

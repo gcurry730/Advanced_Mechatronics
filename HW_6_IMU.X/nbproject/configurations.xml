@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>I2C_IMU.h</itemPath>
+      <itemPath>LCD.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -15,6 +16,7 @@
                    projectFiles="true">
       <itemPath>I2C_IMU.c</itemPath>
       <itemPath>IMU_main.c</itemPath>
+      <itemPath>LCD.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

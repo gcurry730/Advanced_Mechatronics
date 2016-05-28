@@ -1,8 +1,8 @@
 #ifndef I2C_H
 #define I2C_H
 
-// I2C communication library for PIC32 (master) and Expander MCP23008 (slave)  
-// helps implement use I2C1 as a master without using interrupts
+// I2C communication library for PIC32 (master) and IMU (slave)  
+// helps implement use I2C2 as a master without using interrupts
 
 void i2c_master_setup(void);                // set up I2C 1 as a master, at 100 kHz
 void i2c_master_start(void);                // send a START signal

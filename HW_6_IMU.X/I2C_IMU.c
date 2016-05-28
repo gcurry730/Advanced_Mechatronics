@@ -2,49 +2,19 @@
 // The functions must be called in the correct order as per the I2C protocol
 // Change I2C1 to the I2C channel you are using
 // I2C pins need pull-up resistors, 2k-10k
-
 #include "I2C_IMU.h"
 #include <xc.h>
+#define GYRO 0b1101011
+#define WHOAMI 0x0F
+#define CTRL1_XL 0x10
+#define CTRL2_G 0x11
+#define CTRL3_C 0x12
 
-#define SLAVE_ADDRESS_W  0b11010101
-#define SLAVE_ADDRESS_R  0b11010100
 
-unsigned char WhoAreYou(){
-    unsigned char read;
-    i2c_master_start();
-    i2c_master_send(SLAVE_ADDRESS_W);
-    i2c_master_send(0x0F);  //WHO_AM_I register
-    i2c_master_restart();
-    i2c_master_send(SLAVE_ADDRESS_R);
-    read = i2c_master_recv();
-    i2c_master_ack(1);
-    i2c_master_stop();
-    return read;  
-}
-
-void initIMU(void){
-    i2c_master_start();
-    i2c_master_send(SLAVE_ADDRESS_W);
-    i2c_master_send(0x10); // CTRL1_XL register
-    i2c_master_send(0b00000001); // powers accel, low power mode?
-    i2c_master_stop();
-    
-    i2c_master_start();
-    i2c_master_send(SLAVE_ADDRESS_W);
-    i2c_master_send(0x11); // CTRL2_G register
-    i2c_master_send(0b00000001); // powers gyro, low power mode?
-    i2c_master_stop();
-}
-void initI2C(void){
-    // Turn off analog for pins B2, B3 using ANSELB
-    ANSELBbits.ANSB2 = 0;
-    ANSELBbits.ANSB3 = 0;
-    // SDA2 is fixed to B2 and SCL2 is B3
-    i2c_master_setup();
-}
+/////// Given Functions ///////
 
 void i2c_master_setup(void) {
-  I2C2BRG = 390;            // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2 ((=100Khz)) 390?
+  I2C2BRG = 235;            // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2  Fsck = baud rate (100khz) PGD = 104ns Pblck = 48mhz
                                     // look up PGD for your PIC32
   I2C2CONbits.ON = 1;               // turn on the I2C2 module
 }
@@ -81,13 +51,50 @@ void i2c_master_ack(int val) {        // sends ACK = 0 (slave should send anothe
 }
 
 void i2c_master_stop(void) {          // send a STOP:
-    I2C2CONbits.PEN = 1;                // comm is complete and master relinquishes bus
-    while(I2C2CONbits.PEN) { ; }        // wait for STOP to complete
+  I2C2CONbits.PEN = 1;                // comm is complete and master relinquishes bus
+  while(I2C2CONbits.PEN) { ; }        // wait for STOP to complete
 }
 
-void delay(int time) {
-    int delaytime = time; //in hz, core timer freq is half sysfreq
-    int starttime;
-    starttime = _CP0_GET_COUNT(); 
-    while ((int)_CP0_GET_COUNT()-starttime < delaytime){ ; }
+//////// General I2C functions //////
+
+void i2c_master_write(unsigned char ADDRESS, unsigned char REGISTER, unsigned char data) {
+    i2c_master_start();
+    i2c_master_send(ADDRESS<<1);
+    i2c_master_send(REGISTER);
+    i2c_master_send(data);
+    i2c_master_stop();
+}
+
+unsigned char i2c_master_read(unsigned char ADDRESS,unsigned char REGISTER){
+    unsigned char r = 0;
+    i2c_master_start();
+    i2c_master_send(ADDRESS<<1);
+    i2c_master_send(REGISTER);
+    i2c_master_restart();
+    i2c_master_send(ADDRESS<<1|1);
+    r = i2c_master_recv();
+    i2c_master_ack(1);
+    i2c_master_stop();
+return r;
+}
+
+////// Functions for IMU //////
+
+void initI2C(void){
+    // SDA2 is fixed to B2 and SCL2 is B3
+    // Turn off analog for pins B2, B3 using ANSELB
+    ANSELBbits.ANSB2 = 0;
+    ANSELBbits.ANSB3 = 0;
+    // disable SEQOP
+    i2c_master_write(GYRO,0x05,0b00100000);
+}
+
+void init_IMU(){
+    i2c_master_write(GYRO, CTRL1_XL, 0b10000000); ///1000 for 1.66 kHz sample rate, 00 for 2g sensitivity, 00 for 400kHz baud
+    i2c_master_write(GYRO,CTRL2_G,0b10000000); //1000 for 1.66 kHz, 00 for 245 dps sensitivity, 
+    i2c_master_write(GYRO,CTRL3_C,0b00000100);//IF_INC bit 1 will enable the ability to read multiple registers
+}
+
+unsigned char WHO_AM_I(void){
+    return i2c_master_read(GYRO,WHOAMI);
 }

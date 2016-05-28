@@ -4,7 +4,7 @@
 // I2C pins need pull-up resistors, 2k-10k
 #include "I2C.h"
 #include <xc.h>
-#define EXPANDER 0b00100000 // for MCP23008 with A0, A1, A2 = 0,0,0
+
 
 /////// Given Functions ///////
 
@@ -50,31 +50,6 @@ void i2c_master_stop(void) {          // send a STOP:
   while(I2C2CONbits.PEN) { ; }        // wait for STOP to complete
 }
 
-////// Functions for Expander //////
-
-void initExpander(void){
-    // SDA2 is fixed to B2 and SCL2 is B3
-    // Turn off analog for pins B2, B3 using ANSELB
-    ANSELBbits.ANSB2 = 0;
-    ANSELBbits.ANSB3 = 0;
-    // disable SEQOP
-    i2c_master_write(EXPANDER,0x05,0b00100000);
-    // Initialize pins GP0 as output, GP4-7 as inputs
-    i2c_master_write(EXPANDER,0x00,0b11111110);
-}
-
-void setExpander(int level, int pin){  // pin can be 0, 1, 2, 3 etc..   Level is 0 or 1
-    unsigned char data = 0b00000000;
-    data = (data|level)<<pin;
-    i2c_master_write(EXPANDER, 0x09, data);
-}
-
-unsigned char getExpander(void){
-    unsigned char r;
-    r = i2c_master_read(EXPANDER, 0x09);
-    return r;
-}
-
 //////// General I2C functions //////
 
 void i2c_master_write(unsigned char ADDRESS, unsigned char REGISTER, unsigned char data) {
@@ -96,4 +71,18 @@ unsigned char i2c_master_read(unsigned char ADDRESS,unsigned char REGISTER){
     i2c_master_ack(1);
     i2c_master_stop();
 return r;
+}
+
+////// Functions for IMU //////
+
+void initI2C(void){
+    // SDA2 is fixed to B2 and SCL2 is B3
+    // Turn off analog for pins B2, B3 using ANSELB
+    ANSELBbits.ANSB2 = 0;
+    ANSELBbits.ANSB3 = 0;}
+
+unsigned char WHO_AM_I(void){
+    unsigned char REGISTER = 0x0F;
+    unsigned char ADDRESS = 0b1101011; 
+    return i2c_master_read(ADDRESS,REGISTER);
 }
