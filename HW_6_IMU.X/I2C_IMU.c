@@ -90,9 +90,9 @@ void initI2C(void){
 }
 
 void init_IMU(){
-    i2c_master_write(GYRO, CTRL1_XL, 0b10000000); ///1000 for 1.66 kHz sample rate, 00 for 2g sensitivity, 00 for 400kHz baud
+    i2c_master_write(GYRO,CTRL1_XL, 0b10000000); ///1000 for 1.66 kHz sample rate, 00 for 2g sensitivity, 00 for 400kHz baud
     i2c_master_write(GYRO,CTRL2_G,0b10000000); //1000 for 1.66 kHz, 00 for 245 dps sensitivity, 
-    i2c_master_write(GYRO,CTRL3_C,0b00000100);//IF_INC bit 1 will enable the ability to read multiple registers
+    i2c_master_write(GYRO,CTRL3_C,0b00000100); //IF_INC bit 1 will enable the ability to read multiple registers
 }
 
 unsigned char WHO_AM_I(void){
