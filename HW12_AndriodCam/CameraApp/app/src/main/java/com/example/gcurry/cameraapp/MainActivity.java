@@ -13,6 +13,8 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import java.io.IOException;
 import static android.graphics.Color.blue;
 import static android.graphics.Color.green;
@@ -30,6 +32,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     private Paint paint3 = new Paint();
     private Paint paint4 = new Paint();
     private TextView mTextView;
+    private TextView myTextView2;
+    private SeekBar myControl;
 
     static long prevtime = 0; // for FPS calculation
 
@@ -46,6 +50,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
         mTextView = (TextView) findViewById(R.id.cameraStatus);
 
+        myControl = (SeekBar) findViewById(R.id.seek1);
+        myTextView2 = (TextView) findViewById(R.id.threshold);
+        myTextView2.setText("Threshold");
+
         paint1.setColor(0xffff0000); // red
         paint1.setTextSize(24);
         paint2.setColor(0xffff0000); // red
@@ -54,6 +62,29 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         paint3.setTextSize(24);
         paint4.setColor(0xffff0000); // red
         paint4.setTextSize(24);
+    }
+
+    private void setMyControlListener() {
+        myControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            int progressChanged = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress;
+                int threshold = 550 + progress;
+                myTextView2.setText("The threshold is: "+threshold);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -87,6 +118,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
         // Invoked every time there's a new Camera preview frame
         mTextureView.getBitmap(bmp);
+        setMyControlListener();
 
         final Canvas c = mSurfaceHolder.lockCanvas();
         if (c != null) {
