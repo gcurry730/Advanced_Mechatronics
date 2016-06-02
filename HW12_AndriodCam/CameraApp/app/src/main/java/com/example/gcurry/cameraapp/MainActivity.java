@@ -72,8 +72,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChanged = progress;
-                int threshold = 550 + progress;
-                myTextView2.setText("The threshold is: "+threshold);
+                //int threshold = 550 + progress;
+
             }
 
             @Override
@@ -119,6 +119,9 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         // Invoked every time there's a new Camera preview frame
         mTextureView.getBitmap(bmp);
         setMyControlListener();
+        float thresh;
+        thresh = myControl.getProgress()*(800/100);
+        myTextView2.setText("The threshold is: "+thresh);
 
         final Canvas c = mSurfaceHolder.lockCanvas();
         if (c != null) {
@@ -156,7 +159,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
                 // sum the red, green and blue, subtract from 255 to get the darkness of the pixel.
                 // if it is greater than some value (600 here), consider it black
                 // play with the 600 value if you are having issues reliably seeing the line
-                if (255 * 3 - (red(pixels[i]) + green(pixels[i]) + blue(pixels[i])) > 600) {
+                if (255 * 3 - (red(pixels[i]) + green(pixels[i]) + blue(pixels[i])) > thresh) {
                     thresholdedPixels[i] = 255 * 3;
                 } else {
                     thresholdedPixels[i] = 0;
@@ -230,7 +233,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             canvas.drawCircle(COM4, startY4, 5, paint4);
 
             // also write the value as text
-            canvas.drawText("COM = " + COM, 10, 200, paint1);
+            canvas.drawText("COM1 = " + COM, 10, 300, paint1);
+            canvas.drawText("COM2 = " + COM2, 10, 350, paint2);
+            canvas.drawText("COM3 = " + COM3, 10, 400, paint3);
+            canvas.drawText("COM4 = " + COM4, 10, 450, paint4);
             c.drawBitmap(bmp, 0, 0, null);
             mSurfaceHolder.unlockCanvasAndPost(c);
 
