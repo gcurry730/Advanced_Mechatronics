@@ -78,6 +78,26 @@ unsigned char i2c_master_read(unsigned char ADDRESS,unsigned char REGISTER){
 return r;
 }
 
+void i2c_master_multiread(unsigned char ADDRESS,unsigned char REGISTER,int length,unsigned char *data){
+        i2c_master_start();
+        i2c_master_send(ADDRESS<<1);
+        i2c_master_send(REGISTER);
+        i2c_master_restart();
+        i2c_master_send(ADDRESS<<1|1);
+       
+        int i=1;
+        while (i<length){
+        
+        data[i-1] = i2c_master_recv();
+        i2c_master_ack(0);
+        i++;
+        }
+        
+        data[length-1] = i2c_master_recv();
+        i2c_master_ack(1);
+        i2c_master_stop();               
+}
+
 ////// Functions for IMU //////
 
 void initI2C(void){
@@ -98,4 +118,14 @@ void init_IMU(){
 
 unsigned char WHO_AM_I(void){
     return i2c_master_read(GYRO,WHOAMI);
+}
+
+void delay(int time) {
+    int delaytime = time; //in hz, core timer freq is half sysfreq
+    int starttime;
+    starttime = _CP0_GET_COUNT(); 
+    while ((int)_CP0_GET_COUNT()-starttime < delaytime){
+    ;
+    }
+   
 }

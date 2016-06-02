@@ -14,8 +14,10 @@ void i2c_master_stop(void);                    // send a stop
 
 void i2c_master_write(unsigned char ADDRESS, unsigned char REG, unsigned char data);
 unsigned char i2c_master_read(unsigned char ADDRESS,unsigned char REG);
+void i2c_master_multiread(unsigned char ADDRESS,unsigned char REGISTER,int length,unsigned char *data);
 
 void initI2C(void);
 void init_IMU(void);
 unsigned char WHO_AM_I(void);
+void delay(int time);
 #endif

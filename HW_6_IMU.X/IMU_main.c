@@ -46,7 +46,8 @@
 #define IOCON 0x05
 #define GPIO  0x09
 #define OLAT 0x0A
-#define GYRO 0b1101011 
+#define GYRO 0b1101011
+#define OUT_TEMP_L 0x20
 
 int main() {
 	 __builtin_disable_interrupts();
@@ -72,33 +73,121 @@ int main() {
    LCD_init();
    init_IMU();
    
-   
     __builtin_enable_interrupts();
+    
      _CP0_SET_COUNT(0);
      LCD_clearScreen(WHITE);
     
     char textbuffer[20];
 
-    sprintf(textbuffer,"Hello World");
-    LCD_type(28,45,textbuffer, BLACK);
-   ///////////WHOAMI TEST//////////// 
-    unsigned char read = WHO_AM_I();
-    if(read == 0b01101001){
-        sprintf(textbuffer,"TRUE");
-    }
-    else{
-        sprintf(textbuffer,"False");
-    }  
-    LCD_drawPixel(50, 50, BLACK);
-    //LCD_drawCharacter(28, 32, 'D');
-    LCD_type(28,32,textbuffer, BLACK);
-
+//    sprintf(textbuffer,"Hello World");
+//    LCD_type(28,45,textbuffer, BLACK);
     
-
+    ///////////WHOAMI TEST//////////// 
+//    unsigned char read = WHO_AM_I();
+//    if(read == 0b01101001){
+//        sprintf(textbuffer,"TRUE");
+//    }
+//    else{
+//        sprintf(textbuffer,"False");
+//    }  
+//    LCD_type(28,32,textbuffer, BLACK);
+    /////////////////////////////////////
     
+    int bytes = 14;
+    unsigned char IMU_data[bytes];
+    short temp_L = 0;
+    short temp_H = 0;
+    short temp = 0; 
+    short accelX_L = 0;
+    short accelX_H = 0;
+    short accelX = 0;
+    short accelY_L = 0;
+    short accelY_H = 0;
+    short accelY = 0;
+    short accelZ_L = 0;
+    short accelZ_H = 0;
+    short accelZ = 0;
+    short gyroX_L = 0;
+    short gyroX_H = 0;
+    short gyroX = 0;
+    short gyroY_L = 0;
+    short gyroY_H = 0;
+    short gyroY = 0;  
+    short gyroZ_L = 0;
+    short gyroZ_H = 0;
+    short gyroZ = 0;
+    char x = 10;
+    char y = 10;
+    unsigned short ax = 0;
+    unsigned short ay = 0;
+    unsigned short az = 0;
+    
+  
     while(1) {
-        
-        //delay(6000);                      // controls frequency
+       i2c_master_multiread(GYRO,OUT_TEMP_L,bytes,IMU_data);
+       
+       ///////////////PRINTING TO LCD//////////////
+       temp_L = IMU_data[0];
+       temp_H = IMU_data[1];
+       temp = (temp_H<<8)|temp_L;
+       temp = (unsigned short)temp;
+       sprintf(textbuffer,"Temp: %d     ",temp);
+       LCD_type(x,y,textbuffer,BLACK);
+       y = y+20;
+       
+       gyroX_L = IMU_data[2];
+       gyroX_H = IMU_data[3];
+       gyroX = (gyroX_H<<8)|gyroX_L;
+       gyroX = (unsigned short)gyroX;
+       sprintf(textbuffer,"Gyro X: %d     ",gyroX);
+       LCD_type(x,y,textbuffer,BLACK);
+       y = y+10;
+       
+       gyroY_L = IMU_data[4];
+       gyroY_H = IMU_data[5];
+       gyroY = (gyroY_H<<8)|gyroY_L;
+       gyroY = (unsigned short)gyroY;
+       sprintf(textbuffer,"Gyro Y: %d     ",gyroY);
+       LCD_type(x,y,textbuffer,BLACK);
+       y = y+10;
+       
+       gyroZ_L = IMU_data[6];
+       gyroZ_H = IMU_data[7];
+       gyroZ = (gyroZ_H<<8)|gyroZ_L;
+       gyroZ = (unsigned short)gyroZ;
+       sprintf(textbuffer,"Gyro Z: %d     ",gyroZ);
+       LCD_type(x,y,textbuffer,BLACK);
+       y = y+20;
+       
+       accelX_L = IMU_data[8];
+       accelX_H = IMU_data[9];
+       accelX = (accelX_H<<8)|accelX_L;
+       accelX = (unsigned short)accelX;
+       sprintf(textbuffer,"Accel X: %u     ",accelX);
+       LCD_type(x,y,textbuffer,BLACK);
+       y = y+10; 
+       
+       accelY_L = IMU_data[10];
+       accelY_H = IMU_data[11];
+       accelY = (accelY_H<<8)|accelY_L;
+       accelY = (unsigned short)accelY;
+       ay = accelY + 0; 
+       sprintf(textbuffer,"Accel Y: %u     ",az);
+       LCD_type(x,y,textbuffer,BLACK);
+       y = y+10;
+
+       accelZ_L = IMU_data[12];
+       accelZ_H = IMU_data[13];
+       accelZ = (accelZ_H<<8)|accelZ_L;
+       accelZ = (unsigned short)accelZ;
+       az = accelZ +0;
+       sprintf(textbuffer,"Accel Z: %u      ",az);
+       LCD_type(x,y,textbuffer,BLACK);
+       y = 10;
+       
+
+       delay(100000);                      // controls frequency
        
     }
      
