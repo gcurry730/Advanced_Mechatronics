@@ -81,6 +81,7 @@ return r;
 ////// Functions for IMU //////
 
 void initI2C(void){
+    i2c_master_setup();
     // SDA2 is fixed to B2 and SCL2 is B3
     // Turn off analog for pins B2, B3 using ANSELB
     ANSELBbits.ANSB2 = 0;

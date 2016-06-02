@@ -78,20 +78,18 @@ int main() {
      LCD_clearScreen(WHITE);
     
     char textbuffer[20];
-    char textbuffer2[20];
-    int num = 7;
+
     sprintf(textbuffer,"Hello World");
-    
-    //unsigned char read = WHO_AM_I();
-    unsigned char read = 0b01101001;
+    LCD_type(28,45,textbuffer, BLACK);
+   ///////////WHOAMI TEST//////////// 
+    unsigned char read = WHO_AM_I();
     if(read == 0b01101001){
-        sprintf(textbuffer2,"TRUE");
+        sprintf(textbuffer,"TRUE");
     }
     else{
-        sprintf(textbuffer2,"False");
-    }
-    LCD_type(28,45,textbuffer2, BLACK);
-    LCD_drawPixel(50, 50, WHITE);
+        sprintf(textbuffer,"False");
+    }  
+    LCD_drawPixel(50, 50, BLACK);
     //LCD_drawCharacter(28, 32, 'D');
     LCD_type(28,32,textbuffer, BLACK);
 
