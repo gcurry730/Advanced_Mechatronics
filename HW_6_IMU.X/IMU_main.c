@@ -164,7 +164,8 @@ int main() {
        accelX_H = IMU_data[9];
        accelX = (accelX_H<<8)|accelX_L;
        accelX = (unsigned short)accelX;
-       sprintf(textbuffer,"Accel X: %u     ",accelX);
+       ax = accelX + 0;
+       sprintf(textbuffer,"Accel X: %u     ",ax);
        LCD_type(x,y,textbuffer,BLACK);
        y = y+10; 
        
@@ -172,7 +173,8 @@ int main() {
        accelY_H = IMU_data[11];
        accelY = (accelY_H<<8)|accelY_L;
        accelY = (unsigned short)accelY;
-       ay = accelY + 0; 
+       ay = accelY + 0;
+       //range is 0 - 3200, divide by this # then multiply by 9.8
        sprintf(textbuffer,"Accel Y: %u     ",az);
        LCD_type(x,y,textbuffer,BLACK);
        y = y+10;
