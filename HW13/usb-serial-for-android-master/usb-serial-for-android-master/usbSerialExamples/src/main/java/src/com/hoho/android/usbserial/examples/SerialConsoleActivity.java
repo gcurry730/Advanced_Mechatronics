@@ -28,6 +28,7 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ScrollView;
@@ -96,6 +97,7 @@ public class SerialConsoleActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.serial_console);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mTitleTextView = (TextView) findViewById(R.id.demoTitle);
         mDumpTextView = (TextView) findViewById(R.id.consoleText);
         mScrollView = (ScrollView) findViewById(R.id.demoScroller);
@@ -212,6 +214,15 @@ public class SerialConsoleActivity extends Activity {
                 + HexDump.dumpHexString(data) + "\n\n";
         mDumpTextView.append(message);
         mScrollView.smoothScrollTo(0, mDumpTextView.getBottom());
+
+        //byte[] sData = {'a',0}; try { sPort.write(sData, 10); } catch (IOException e) { }
+
+        int i = 1; int j = 2; // the two numbers to send
+        String sendString = String.valueOf(i) + " " + String.valueOf(j);
+        try {
+            sPort.write(sendString.getBytes(),10); // 10 is the timeout (error)
+        }
+        catch (IOException e) {}
     }
 
     /**
