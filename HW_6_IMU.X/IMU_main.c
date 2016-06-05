@@ -79,6 +79,24 @@ int main() {
      LCD_clearScreen(WHITE);
     
     char textbuffer[20];
+    
+    //// PWM init. //////
+    RPA0Rbits.RPA0R = 0b0101; // OC1
+    RPB8Rbits.RPB8R = 0b0101; // OC2
+    OC1CONbits.OCTSEL = 0; // select timer 2 for both
+    OC2CONbits.OCTSEL = 0;
+    OC1CONbits.OCM = 0b110; // set to PWM mode
+    OC2CONbits.OCM = 0b110;
+    T2CONbits.TCKPS = 6; //timer 2 prescaler = 1:4, N=4
+    PR2 = 1999; //period 2 = (PR2+1) * N * 12.5 ns = 100 us, 10 kHz
+    TMR2 = 0;
+    OC1RS = 1000;
+    OC1R = 1000;
+    OC2RS = 1000;
+    OC2R = 1000;
+    T2CONbits.ON = 1;
+    OC1CONbits.ON = 1;
+    OC2CONbits.ON = 1;
 
 //    sprintf(textbuffer,"Hello World");
 //    LCD_type(28,45,textbuffer, BLACK);
@@ -205,7 +223,34 @@ int main() {
        LCD_type(x+80,y,textbuffer,BLACK);
        y = 10;
        
+       ///////////////PWM//////////////////
+       if (ax>=0){
+       OC1RS = floor((ax*1000))+1000; //duty cycle = OC1RS/2000, range is 0,2g
+       }
+       else if (ax<0){
+       OC1RS = floor((ax*-1000)); //duty cycle = OC1RS/2000, range is -2,0g
+       }
+       if (ay>=0){
+       OC2RS = floor((ay*1000))+1000; //duty cycle = OC1RS/2000, range is 0,2g
+       }
+       else if (ay<0){
+       OC2RS = floor((ay*-1000)); //duty cycle = OC1RS/2000, range is -2,0g
+       }
 
+       if(OC1RS>2000){
+           OC1RS = 2000;
+            }
+       else if(OC1RS<0){
+           OC1RS = 0;
+       }
+       
+       if(OC2RS>2000){
+           OC2RS = 2000;
+            }
+       else if(OC2RS<0){
+           OC2RS = 0;
+       }
+       
        delay(100000);                      // controls frequency
        
     }
