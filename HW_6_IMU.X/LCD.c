@@ -16,6 +16,9 @@
 #include <xc.h>
 #include "LCD.h"
 
+static unsigned char pGammaSet[15]= {0x36,0x29,0x12,0x22,0x1C,0x15,0x42,0xB7,0x2F,0x13,0x12,0x0A,0x11,0x0B,0x06};
+static unsigned char nGammaSet[15]= {0x09,0x16,0x2D,0x0D,0x13,0x15,0x40,0x48,0x53,0x0C,0x1D,0x25,0x2E,0x34,0x39};
+
 void SPI1_init() {
 	SDI1Rbits.SDI1R = 0b0100; // B8 is SDI1
     RPA1Rbits.RPA1R = 0b0011; // A1 is SDO1
@@ -222,7 +225,7 @@ void LCD_drawCharacter(unsigned short x, unsigned short y, char character){
 //
 //}
 void LCD_type(unsigned char x,unsigned char y,char *characters, unsigned short color) {
-    char ii = 0;
+    int ii = 0;
     while(characters[ii]) {
         if (((x+4)>128)|((y+7)>128)){
     }

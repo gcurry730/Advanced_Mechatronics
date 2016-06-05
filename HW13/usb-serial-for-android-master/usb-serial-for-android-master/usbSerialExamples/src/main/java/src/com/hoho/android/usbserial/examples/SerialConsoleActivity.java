@@ -41,6 +41,10 @@ import com.hoho.android.usbserial.util.SerialInputOutputManager;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+//added:
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 /**
  * Monitors a single {@link UsbSerialPort} instance, showing all data
@@ -69,6 +73,10 @@ public class SerialConsoleActivity extends Activity {
     private ScrollView mScrollView;
     private CheckBox chkDTR;
     private CheckBox chkRTS;
+    //added:
+    private SeekBar myControl;
+    private TextView myTextView;
+
 
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
@@ -103,6 +111,12 @@ public class SerialConsoleActivity extends Activity {
         mScrollView = (ScrollView) findViewById(R.id.demoScroller);
         chkDTR = (CheckBox) findViewById(R.id.checkBoxDTR);
         chkRTS = (CheckBox) findViewById(R.id.checkBoxRTS);
+        //added:
+        myControl = (SeekBar) findViewById(R.id.seek1);
+        myTextView = (TextView) findViewById(R.id.textView01);
+        myTextView.setText("Enter whatever you Like!");
+
+        setMyControlListener();
 
         chkDTR.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -123,7 +137,28 @@ public class SerialConsoleActivity extends Activity {
         });
 
     }
+    //added:
+    private void setMyControlListener() {
+        myControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
+            int progressChanged = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress;
+                myTextView.setText("The value is: "+progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
 
     @Override
     protected void onPause() {
@@ -218,7 +253,7 @@ public class SerialConsoleActivity extends Activity {
         //byte[] sData = {'a',0}; try { sPort.write(sData, 10); } catch (IOException e) { }
 
         int i = 1; int j = 2; // the two numbers to send
-        String sendString = String.valueOf(i) + " " + String.valueOf(j);
+        String sendString = String.valueOf(i) + "/n" + String.valueOf(j);
         try {
             sPort.write(sendString.getBytes(),10); // 10 is the timeout (error)
         }
