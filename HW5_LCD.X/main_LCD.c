@@ -76,6 +76,12 @@ int main() {
     int leet = 1337;
     sprintf(textbuffer,"Hello World! %d!",leet);
     
+    //////////////NOTE///////////////////////////////
+    //
+    // Writing IMU data to screen is in HW_6 folder! 
+    // I did them out of order.
+    //
+    /////////////////////////////////////////////////
     
     while(1) {
         LCD_drawPixel(50, 50, WHITE);
