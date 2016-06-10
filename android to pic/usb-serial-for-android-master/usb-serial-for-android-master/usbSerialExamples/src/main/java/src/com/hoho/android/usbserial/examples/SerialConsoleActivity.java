@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -88,6 +89,8 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
     private CheckBox chkDTR;
     private CheckBox chkRTS;
 
+    MediaPlayer mySound;
+
     //added
     private SeekBar myControl; //this is seekbar for b/w threshold
     private TextView myTextView;
@@ -146,6 +149,9 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
         mScrollView = (ScrollView) findViewById(R.id.demoScroller);
         chkDTR = (CheckBox) findViewById(R.id.checkBoxDTR);
         chkRTS = (CheckBox) findViewById(R.id.checkBoxRTS);
+
+        mySound = MediaPlayer.create(this,R.raw.chariots);
+        mySound.start();
 
         //added
         myControl = (SeekBar) findViewById(R.id.seek1);
@@ -287,6 +293,13 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
         }
     }
 
+    @Override
+    public void onDestroy(){
+        mySound.stop();
+        mySound.release();
+    }
+
+
     private void onDeviceStateChange() {
         stopIoManager();
         startIoManager();
@@ -402,9 +415,9 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
         // Invoked every time there's a new Camera preview frame
         mTextureView.getBitmap(bmp);
 //        //setMyControlListener();
-        float thresh;
-        thresh = myControl.getProgress()*(800/100);
-        myTextView.setText("The blck/wht threshold is: "+thresh);
+        float thresh_gn;
+        thresh_gn = myControl.getProgress()*(200/100)+200;
+        myTextView.setText("The green threshold is: "+thresh_gn);
 
 //        String sendString = String.valueOf(thresh) + '\n';
 //        try {
@@ -442,6 +455,9 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
             int[] thresholdedPixels4 = new int[bmp.getWidth()];
 
             int[] thresholdedColors = new int[bmp.getWidth()];
+            int[] thresholdedColors2 = new int[bmp.getWidth()];
+            int[] thresholdedColors3 = new int[bmp.getWidth()];
+            int[] thresholdedColors4 = new int[bmp.getWidth()];
 
             int wbTotal = 0; // total mass
             int wbCOM = 0; // total (mass time position)
@@ -457,13 +473,13 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
                 // if it is greater than some value (600 here), consider it black
                 // play with the 600 value if you are having issues reliably seeing the line
 
-                if (255 * 3 - (red(pixels[i]) + green(pixels[i]) + blue(pixels[i])) > 600) {//thresh
+                if (255-(green(pixels[i])-red(pixels[i])) > thresh_gn) {//thresh_gn
                     thresholdedPixels[i] = 255 * 3;
 
                 } else {
                     thresholdedPixels[i] = 0;
                 }
-                if (255-(green(pixels[i])-red(pixels[i])) > 252){///thresh_gn
+                if (255-(green(pixels[i])-red(pixels[i])) > thresh_gn){///thresh_gn
                     thresholdedColors[i]=rgb(0,0,0);//black
                 }else{
                     thresholdedColors[i]=rgb(0,255,0);//green
@@ -473,32 +489,53 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
                 wbTotal = wbTotal + thresholdedPixels[i];
                 wbCOM = wbCOM + thresholdedPixels[i] * i;
 
-                if (255 * 3 - (red(pixels2[i]) + green(pixels2[i]) + blue(pixels2[i])) > 600) {
+                if (255-(green(pixels2[i])-red(pixels2[i])) > thresh_gn) {
                     thresholdedPixels2[i] = 255 * 3;
                 } else {
                     thresholdedPixels2[i] = 0;
                 }
+                if (255-(green(pixels2[i])-red(pixels2[i])) > thresh_gn){///thresh_gn
+                    thresholdedColors2[i]=rgb(0,0,0);//black
+                }else{
+                    thresholdedColors2[i]=rgb(0,255,0);//green
+
+                }
                 wbTotal2 = wbTotal2 + thresholdedPixels2[i];
                 wbCOM2 = wbCOM2 + thresholdedPixels2[i] * i;
 
-                if (255 * 3 - (red(pixels3[i]) + green(pixels3[i]) + blue(pixels3[i])) > 600) {
+                if (255-(green(pixels3[i])-red(pixels3[i])) > thresh_gn) {
                     thresholdedPixels3[i] = 255 * 3;
                 } else {
                     thresholdedPixels3[i] = 0;
                 }
+                if (255-(green(pixels3[i])-red(pixels3[i])) > thresh_gn){///thresh_gn
+                    thresholdedColors3[i]=rgb(0,0,0);//black
+                }else{
+                    thresholdedColors3[i]=rgb(0,255,0);//green
+
+                }
                 wbTotal3 = wbTotal3 + thresholdedPixels3[i];
                 wbCOM3 = wbCOM3 + thresholdedPixels3[i] * i;
 
-                if (255 * 3 - (red(pixels4[i]) + green(pixels4[i]) + blue(pixels4[i])) > 600) {
+                if (255-(green(pixels4[i])-red(pixels4[i])) > thresh_gn) {
                     thresholdedPixels4[i] = 255 * 3;
                 } else {
                     thresholdedPixels4[i] = 0;
+                }
+                if (255-(green(pixels4[i])-red(pixels4[i])) > thresh_gn){///thresh_gn
+                    thresholdedColors4[i]=rgb(0,0,0);//black
+                }else{
+                    thresholdedColors4[i]=rgb(0,255,0);//green
+
                 }
                 wbTotal4 = wbTotal4 + thresholdedPixels4[i];
                 wbCOM4 = wbCOM4 + thresholdedPixels4[i] * i;
             }
 //////////////////////////////////////////////////////////////////////////////////////////////
             bmp.setPixels(thresholdedColors, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+            bmp.setPixels(thresholdedColors2, 0, bmp.getWidth(), 0, startY2, bmp.getWidth(), 1);
+            bmp.setPixels(thresholdedColors3, 0, bmp.getWidth(), 0, startY3, bmp.getWidth(), 1);
+            bmp.setPixels(thresholdedColors4, 0, bmp.getWidth(), 0, startY4, bmp.getWidth(), 1);
             int COM;
             //watch out for divide by 0
             if (wbTotal<=0) {
@@ -548,7 +585,7 @@ public class SerialConsoleActivity extends Activity implements TextureView.Surfa
 
             //calculate
             int difference;
-            difference = COM3-COM4;
+            difference = COM3;
             String sendString = String.valueOf(difference) + '\n';
             try {
                 sPort.write(sendString.getBytes(),10); // 10 is the timeout

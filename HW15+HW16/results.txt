@@ -1,0 +1,9 @@
+Results: 
+
+- One slider- just to control the threshold for the green vs. red calculation (~250 worked well)
+- Info sent to PIC: just one number, the location of COM3
+	- I had 4 total COM's calculated but choosing only one (a little above the center of the robots point of view) was the simplest
+- PIC then takes that number, finds the distance from the center(320), and uses that difference, 
+  scaled by a factor to increase the speed of the correct wheel
+- The wheels always go a min speed of about 35% duty cycle and the extra is added to that from the difference calculation.
+- The camera is held at a 45 degree andgle above the ground   
