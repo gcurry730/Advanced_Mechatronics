@@ -36,17 +36,17 @@ Write an Anrdoid App (Hello World).
 ###HW 10: 
 Use CAD to make a wheel hub for your motor and o-ring. 3D print it.
 
-<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW10_3Dprint/Wheel_final.JPG" width="667" height="375">
+<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW10_3Dprint/Wheel_final.JPG" width="568" height="320">
 
 ###HW 11:
 CAD a 3-sided box and laser cut it.
 
-<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW11_laser_cut/Box_2.JPG" width="667" height="375">
+<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW11_laser_cut/Box_2.JPG" width="568" height="320">
 
 ###HW 12:
 Write an Android app that uses the camera to identify the center of a brown line drawn ona green background.
 
-<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW12_AndriodCam/CameraApp_screenshot.JPG" width="667" height="375">
+<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW12_AndriodCam/CameraApp_screenshot.JPG" width="568" height="320">
 
 ###HW 13:
 Write an Android app that communicates with a PIC32 CDC device.  
@@ -60,4 +60,4 @@ Complete the PIC CDC code that controls your motors based on the information bei
 ###HW 16:  
 Final line following robot code. Final robot design. 
 
-<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW15%2BHW16/IMG_2713%20(1).JPG" width="667" height="375">
+<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW15%2BHW16/IMG_2713%20(1).JPG" width="568" height="320">
