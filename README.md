@@ -35,7 +35,8 @@ Write an Anrdoid App (Hello World).
 
 ###HW 10: 
 Use CAD to make a wheel hub for your motor and o-ring. 3D print it.
-![Wheels](https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW10_3Dprint/Wheel_final.JPG "Wheels")
+
+<img src="https://github.com/gcurry730/GaleCurry_ME433_2016/blob/master/HW10_3Dprint/Wheel_final.JPG" width="500" height="300">
 
 ###HW 11:
 CAD a 3-sided box and laser cut it.
